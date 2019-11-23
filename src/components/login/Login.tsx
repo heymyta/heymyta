@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
-import { Form } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 
+interface LoginProps {
+  
+}
 
-class Login extends Component {
-  constructor(props) {
+interface LoginState {
+  
+}
+
+class Login extends Component<LoginProps, LoginState> {
+  constructor(props: LoginProps) {
     super(props);
     this.state = {
       username: '',
@@ -14,7 +21,18 @@ class Login extends Component {
   render() {
     return (
       <div>
-        <Form></Form>
+        <Form>
+          <Form.Label>Login</Form.Label>
+          <Form.Group>
+            <Form.Control type="email" placeholder="Email"></Form.Control>
+          </Form.Group>
+          <Form.Group>
+            <Form.Control type="password" placeholder="Password" />
+          </Form.Group>
+          <Button variant="primary" type="submit">
+            Login
+          </Button>
+        </Form>
       </div>
     );
   }
