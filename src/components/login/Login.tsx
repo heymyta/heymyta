@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 function Login() {
-  return (<div>yada</div>);
+  return (<div>..</div>);
 }
 
 export default Login;
