@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { Form } from 'react-bootstrap';
 
 
 class Login extends Component {
@@ -13,11 +13,10 @@ class Login extends Component {
   
   render() {
     return (
-      <>
-        <div>
-        </div>
-      <>
-    )
+      <div>
+        <Form></Form>
+      </div>
+    );
   }
 }
 
