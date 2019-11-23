@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Container, Row } from 'react-bootstrap';
 
 interface LoginProps {
   
@@ -21,18 +21,22 @@ class Login extends Component<LoginProps, LoginState> {
   render() {
     return (
       <div>
-        <Form>
-          <Form.Label>Login</Form.Label>
-          <Form.Group>
-            <Form.Control type="email" placeholder="Email"></Form.Control>
-          </Form.Group>
-          <Form.Group>
-            <Form.Control type="password" placeholder="Password" />
-          </Form.Group>
-          <Button variant="primary" type="submit">
-            Login
-          </Button>
-        </Form>
+        <Container>
+          <Row className="justify-content-md-center">
+            <Form>
+              <Form.Label>Login</Form.Label>
+              <Form.Group>
+                <Form.Control type="email" placeholder="Email"></Form.Control>
+              </Form.Group>
+              <Form.Group>
+                <Form.Control type="password" placeholder="Password" />
+              </Form.Group>
+              <Button variant="primary" type="submit">
+                Login
+              </Button>
+            </Form>
+          </Row>
+        </Container>
       </div>
     );
   }
