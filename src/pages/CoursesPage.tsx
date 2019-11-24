@@ -38,6 +38,8 @@ class CoursesPage extends Component<MyProps, MyState>{
       courses : [],
     }
     this.getCourses = this.getCourses.bind(this);
+    
+
   }
 
   async getCourses(){
@@ -52,6 +54,7 @@ class CoursesPage extends Component<MyProps, MyState>{
 
   componentDidMount(){
     this.getCourses();
+    console.log('user', this.props.auth);
   }
   render() {
     let courseList = this.state.courses.map(

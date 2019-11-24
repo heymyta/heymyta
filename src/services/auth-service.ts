@@ -17,28 +17,33 @@ class AuthService {
   }
   /**
    * check if current login account is a student or ta or none
+   * force: = true. force to reconnect and check for authentication
    */
   async whoami(force=false){
-    let payload = (login, type) => {
+    let payload = (logedIn, userType) => {
       return {
-        login: login,
-        type: type
+        logedIn: logedIn,
+        userType: userType
       }
     }
     this.logedIn = false;
 
     //use cache
-    // if(this.connected && !force){
-    //   return payload(this.logedIn, this.userType);
-    // }
+    if(this.connected && !force){
+      return payload(this.logedIn, this.userType);
+    }
     
     let isTA = await this.isUserType(UserType.TA);
-    console.log('isTA', isTA);
-    if(isTA) return payload(this.logedIn, this.userType);
+    if(isTA) {
+      this.connected = true;
+      return payload(this.logedIn, this.userType);
+    }
     
     let isStudent = await this.isUserType(UserType.STUDENT);
-    console.log('isStudent', isStudent);
-    if(isStudent) return payload(this.logedIn, this.userType);
+    if(isStudent){
+      this.connected = true;
+      return payload(this.logedIn, this.userType);
+    }
     
     return payload(false, UserType.NONE);
   }
@@ -52,6 +57,8 @@ class AuthService {
     if(res.code == 403){
       return false;
     }
+    this.logedIn = true;
+    this.userType = userType;
     return true;
   }
 
