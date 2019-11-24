@@ -6,6 +6,7 @@ import {
   Switch, BrowserRouter
 } from 'react-router-dom';
 
+import ProtectedRoute from './components/route/ProtectedRoute';
 import AuthService from './services/auth-service';
 import LoginPage from './pages/LoginPage';
 import CoursesPage from './pages/CoursesPage';
@@ -39,13 +40,18 @@ class App extends Component {
   render() {
     const App = () => (
       <div>
-        <Route exact path='/' component={() => 
+        <Route exact path='/' 
+          component={() => 
           <LoginPage auth={this.authService}/>
         }/>
-        <Route exact path='/courses/' component={() => 
+        <Route exact path='/courses/' 
+          component={() => 
           <CoursesPage auth={this.authService}/>
         }/>
-        <Route path='/courses/:courseId' component={CoursePage} />
+          <ProtectedRoute path='/courses/:courseId' 
+            component={() => 
+            <CoursePage auth={this.authService} /> 
+          }/>
       </div>
     );
     return (
