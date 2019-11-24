@@ -1,7 +1,8 @@
 
 import React, { Component } from 'react';
 import { 
-    Container, Row, Card
+    Container, Row, 
+    Card, CardDeck
 } from 'react-bootstrap';
 
 
@@ -19,15 +20,15 @@ interface MyState {
 
 let CourseListing = (props) => (
     <Card style={{ width: '18rem', boxShadow: '0 3px 10px rgba(0,0,0,0.1)'}}>
-    <Card.Body>
-        <Card.Title>{props.course.name}</Card.Title>
-        <Card.Subtitle className="mb-2 text-muted">Instructor: ...</Card.Subtitle>
-        <Card.Text>
-        {props.course.desc} <br />
-          {"#"} of Active TA: {Object.keys(props.course.activeTeachers).length}
-        </Card.Text>
-        <Card.Link href="#">Enter</Card.Link>
-    </Card.Body>
+      <Card.Body>
+          <Card.Title>{props.course.name}</Card.Title>
+          <Card.Subtitle className="mb-2 text-muted">Instructor: ...</Card.Subtitle>
+          <Card.Text>
+          {props.course.desc} <br />
+            {"#"} of Active TA: {Object.keys(props.course.activeTeachers).length}
+          </Card.Text>
+          <Card.Link href="#">Enter</Card.Link>
+      </Card.Body>
     </Card>
 );
 
@@ -65,13 +66,11 @@ class CoursesPage extends Component<MyProps, MyState>{
                 <Header />
                 <Container>
                     <Row>
-                        {JSON.stringify(this.state.courses)}
-                    </Row>
-                    <Row>
+                      <CardDeck>
                         {courseList}
+                      </CardDeck>
                     </Row>
                 </Container>
-
             </div>
         );
     }
