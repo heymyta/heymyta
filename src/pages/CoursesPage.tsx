@@ -10,6 +10,7 @@ import Header from '../components/header/Header';
 import httpService from '../utils/http-service';
 
 interface MyProps {
+  
 }
   
 interface MyState {
@@ -17,7 +18,7 @@ interface MyState {
 }
 
 let CourseListing = (props) => (
-    <Card style={{ width: '18rem' }}>
+    <Card style={{ width: '18rem', boxShadow: '0 3px 10px rgba(0,0,0,0.1)'}}>
     <Card.Body>
         <Card.Title>{props.course.name}</Card.Title>
         <Card.Subtitle className="mb-2 text-muted">Instructor: ...</Card.Subtitle>
@@ -29,6 +30,7 @@ let CourseListing = (props) => (
     </Card.Body>
     </Card>
 );
+
 class CoursesPage extends Component<MyProps, MyState>{
     constructor(props){
         super(props);
@@ -36,8 +38,8 @@ class CoursesPage extends Component<MyProps, MyState>{
             courses : [],
         }
         this.getCourses = this.getCourses.bind(this);
-        
     }
+  
     async getCourses(){
         let $this = this;
         httpService.get(`/queue/get_all?full=true`,
@@ -59,9 +61,8 @@ class CoursesPage extends Component<MyProps, MyState>{
         );
         return (
             <div>
-                <Container>
-                    <Header />
-                </Container>
+
+                <Header />
                 <Container>
                     <Row>
                         {JSON.stringify(this.state.courses)}
