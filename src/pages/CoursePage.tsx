@@ -9,7 +9,6 @@ class CoursePage extends Component{
       return (
           <div>
               <Header />
-
           </div>
       );
     }
