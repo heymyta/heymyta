@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 class HttpService {
-    baseURL;
+    baseURL = `heymyta-server.glitch.me/api/`;
     service;
     constructor(){
         this.baseURL = `heymyta-server.glitch.me/api/`;
@@ -12,10 +12,10 @@ class HttpService {
         this.service.defaults.baseURL = 'https://heymyta-server.glitch.me/'
         this.service.interceptors.response.use(this.handleSuccess, this.handleError);
     }
-    handleError(res){
+    handleSuccess(res){
         return res;
     }
-    handleError = (error) => {
+    handleError(error){
         // switch (error.response.status) {
             //TODO: create these page. :)
             // case 401:
