@@ -12,17 +12,15 @@ const ProtectedRoute = ({component: Component, ...props}) => {
   
   useEffect(() => {
       props.auth.whoami().then((res) => {
-        console.log('after whoami', res);
-        console.log('set', props.auth.logedIn);
         setIsAuth(props.auth.logedIn);
         if(isAuth === false){
           setRedirect(true);
         }
       });
   });
-  console.log('before render isAuth', isAuth);
-  //if redirect -> redirect. else . if auth -> render() else redirecting
   
+  //if redirect -> redirect. else . 
+  //if auth -> render() else redirecting
   return (
     <Route {...props} render={(props) => (
       (

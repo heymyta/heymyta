@@ -22,8 +22,8 @@ class App extends Component {
 
   async fakeAuth(){
     // await this.authService.fakeTARegister('test', 'test@test.com', 'test');
-    let auth =  this.authService.fakeTAAuth('test', 'test');
-    this.authService.forceLogout();
+    let auth =  await this.authService.fakeTAAuth('test', 'test');
+    return auth;
   }
 
   componentDidMount(){

@@ -27,11 +27,11 @@ class AuthService {
       }
     }
     
-
     //use cache
-    if(this.connected && !force){
+    if(this.connected === true && !force){
       return payload(this.logedIn, this.userType);
     }
+    
     this.logedIn = false;
     this.userType = UserType.NONE;
     

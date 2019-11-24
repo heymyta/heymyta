@@ -34,7 +34,6 @@ class HttpService {
         document.location = path
     }
     get(path, callback){
-        console.log('path', path);
         return this.service.get(path).then(
             (res) => callback(res.status, res.data)
         );
