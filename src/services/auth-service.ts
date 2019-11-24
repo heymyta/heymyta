@@ -47,21 +47,24 @@ class AuthService {
     let type = UserType.STUDENT ? "student" : "teacher";
     let api = `/${type}/me`;
     
-    var that = this;
-    return new Promise(function (resolve, reject) {
-      console.log('api', api);
-      HttpService.get(api, (status, res) => {
-        console.log("status", res.code, "is", userType, 'res', res);
-        if(res.code == 200){
-          that.logedIn = true;
-          that.userType = userType
-          that.connected = true;
-          resolve(that.logedIn);
-        }else{
-          reject("Not login" + that.logedIn);
-        }
-      });
-    }); 
+    let res = await fetch(api);
+    console.log('res');
+    return false;
+    // var that = this;
+    // return new Promise(function (resolve, reject) {
+    //   console.log('api', api);
+    //   HttpService.get(api, (status, res) => {
+    //     console.log("status", res.code, "is", userType, 'res', res);
+    //     if(res.code == 200){
+    //       that.logedIn = true;
+    //       that.userType = userType
+    //       that.connected = true;
+    //       resolve(this);
+    //     }else{
+    //       reject("mess");
+    //     }
+    //   });
+    // }); 
   }
 }
 
