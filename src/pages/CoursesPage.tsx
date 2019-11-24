@@ -20,9 +20,10 @@ let CourseListing = (props) => (
     <Card style={{ width: '18rem' }}>
     <Card.Body>
         <Card.Title>{props.course.name}</Card.Title>
-        <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
+        <Card.Subtitle className="mb-2 text-muted">Instructor: ...</Card.Subtitle>
         <Card.Text>
-        {props.course.desc}
+        {props.course.desc} <br />
+          {"#"} of Active TA: {Object.keys(props.course.activeTeachers).length}
         </Card.Text>
         <Card.Link href="#">Enter</Card.Link>
     </Card.Body>

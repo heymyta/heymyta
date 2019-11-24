@@ -4,8 +4,9 @@ import { Container, Navbar } from 'react-bootstrap';
 function Header() {
   return (
     <Container>
-      <Navbar expand="xl" variant="light" bg="bg-red">
-        <Navbar.Brand href="#">Navbar</Navbar.Brand>
+      <Navbar expand="xl" variant="dark" bg="dark">
+        
+        <Navbar.Brand href={""}>HeyMyTa</Navbar.Brand>
       </Navbar>
     </Container>
   );
