@@ -7,15 +7,19 @@ import {
 const ProtectedRoute = ({component: Component, ...props}) => {
   let [isAuth, setIsAuth] = useState();
   
+  console.log('props.auth', props.auth);
+  
   useEffect(() => {
       props.auth.whoami().then((res) => {
-        this.setState(props.auth.logedIn);
+        console.log('after whoami', res);
+        setIsAuth(props.auth.logedIn);
+        console.log('isAuth', isAuth);
       });
   });
   
   return (
     <Route {...props} render={(props) => (
-      isAuth === true 
+      isAuth == true 
         ? <Component {...props} />
         : <Redirect to='/' />
     )} />

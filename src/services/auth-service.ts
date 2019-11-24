@@ -26,12 +26,14 @@ class AuthService {
         userType: userType
       }
     }
-    this.logedIn = false;
+    
 
     //use cache
     if(this.connected && !force){
       return payload(this.logedIn, this.userType);
     }
+    this.logedIn = false;
+    this.userType = UserType.NONE;
     
     let isTA = await this.isUserType(UserType.TA);
     if(isTA) {

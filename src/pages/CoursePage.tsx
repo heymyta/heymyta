@@ -3,7 +3,15 @@ import React, { Component } from 'react';
 import Header from '../components/header/Header';
 import Courses from '../components/courses/Courses';
 
-class CoursePage extends Component{
+import AuthService from '../services/auth-service';
+interface MyProps {
+  auth: AuthService,
+}
+  
+interface MyState {
+}
+
+class CoursePage extends Component<MyProps, MyState>{
    
   render() {
     return (
