@@ -2,11 +2,11 @@ import axios from 'axios';
 
 class HttpService {
     service;
-    baseURL;
     constructor(){
-        this.baseURL = `https://heymyta-server.glitch.me/api`;
-        this.service = axios.create({});
-        this.service.defaults.baseURL = this.baseURL;
+        this.service = axios.create({
+            baseURL: `${process.env.SERVER_API_ENDPOINT_BASE}`
+        });
+        this.service.defaults.baseURL = `${process.env.SERVER_API_ENDPOINT}`
         this.service.interceptors.response.use(this.handleSuccess, this.handleError);
     }
     handleSuccess(res){
