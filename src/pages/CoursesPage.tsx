@@ -3,18 +3,11 @@ import React, { Component } from 'react';
 import { 
     Container, Row, 
     Card, CardDeck
-} from 'react-bootstrap';
+} from 'reactstrap';
 
 
 import Header from '../components/header/Header';
 import httpService from '../utils/http-service';
-
-interface RouteInfo {
-    courseId: string;
-}
-
-interface ComponentProps extends RouteComponentProps<RouteInfo> {
-}
 
 interface MyProps {
   
