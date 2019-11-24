@@ -51,11 +51,9 @@ class AuthService {
   }
   
   async isUserType(userType=UserType.STUDENT){
-    console.log('userType', userType);
     let type = (userType===UserType.STUDENT) ? "student" : "teacher";
     let api = `/${type}/me`;
     let res = await httpService.getAsync(api);
-    console.log("api", api, 'isusertype res', res);
     if(res.code == 403){
       return false;
     }
@@ -77,6 +75,10 @@ class AuthService {
       username: name,
       password: pass
     });
+  }
+  
+  async forceLogout(){
+    return await httpService.getAsync('/logout');
   }
 
 }

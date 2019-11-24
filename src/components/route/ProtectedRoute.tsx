@@ -7,7 +7,7 @@ import Redirecting from './Redirecting';
 
 const ProtectedRoute = ({component: Component, ...props}) => {
   let [isAuth, setIsAuth] = useState();
-  
+  let [redirect, setRedirect] = useState(false);
   console.log('props.auth', props.auth);
   
   useEffect(() => {
@@ -15,15 +15,23 @@ const ProtectedRoute = ({component: Component, ...props}) => {
         console.log('after whoami', res);
         console.log('set', props.auth.logedIn);
         setIsAuth(props.auth.logedIn);
-        console.log('isAuth', isAuth);
+        if(isAuth === false){
+          setRedirect(true);
+        }
       });
   });
   console.log('before render isAuth', isAuth);
+  //if redirect -> redirect. else . if auth -> render() else redirecting
+  
   return (
     <Route {...props} render={(props) => (
-      isAuth == true 
-        ? <Component {...props} />
-        : <Redirecting />
+      (
+      redirect === true
+        ? <Redirect to='/' />
+        :(isAuth === true 
+          ? <Component {...props} />
+          : <Redirecting />)
+      )
     )} />
   );
 }
