@@ -7,7 +7,7 @@ import {
 
 
 import Header from '../components/header/Header';
-import httpService from '../utils/http-service';
+import httpService from '../services/http-service';
 
 interface MyProps {
   
