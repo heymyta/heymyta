@@ -21,20 +21,23 @@ class AuthService {
   async me(force=false){
     let payload = (login, type) => {
       return {
-        login: this.logedIn,
-        type: this.userType
+        login: login,
+        type: type
       }
     }
     
-    if(this.connected && !force){
-      return payload(this.logedIn, this.userType);
-    }
+    console.log('here');
+//     if(this.connected && !force){
+//       return payload(this.logedIn, this.userType);
+//     }
     
 
-    let isTA = await this.isType(UserType.STUDENT);
+    let isTA = await this.isType(UserType.TA);
+    console.log('isTA', isTA);
     if(isTA) return payload(this.logedIn, this.userType);
     
-    let isStudent = await this.isType(UserType.TA);
+    let isStudent = await this.isType(UserType.STUDENT);
+    console.log('isStudent', isStudent);
     if(isStudent) return payload(this.logedIn, this.userType);
     
     return payload(false, UserType.NONE);
@@ -46,32 +49,35 @@ class AuthService {
     
     var that = this;
     return new Promise(function (resolve, reject) {
-    HttpService.get(api, (status, res) => {
-      console.log("status", status);
-      if(status == 200){
-        this.logedIn = true;
-        this.type = userType
-        return this.logedIn;
-      }
-      return this.logedIn;
-    });
+      console.log('api', api);
+      HttpService.get(api, (status, res) => {
+        console.log("status", res.code, "is", userType, 'res', res);
+        if(res.code == 200){
+          that.logedIn = true;
+          that.userType = userType
+          that.connected = true;
+          resolve(that.logedIn);
+        }else{
+          reject("Not login" + that.logedIn);
+        }
+      });
     }); 
   }
 }
 
-db.runAsync = function (query, param) {
-  var that = this;  
-  return new Promise(function (resolve, reject) {
-      that.run(query, param, function (err) {
-          if (err){
-            printDetailError({}, err);
-            reject(err.message);
-          }
-          else{
-            resolve(this);
-          }
+// db.runAsync = function (query, param) {
+//   var that = this;  
+//   return new Promise(function (resolve, reject) {
+//       that.run(query, param, function (err) {
+//           if (err){
+//             printDetailError({}, err);
+//             reject(err.message);
+//           }
+//           else{
+//             resolve(this);
+//           }
             
-      });
-  });
-};
+//       });
+//   });
+// };
 export default AuthService; 
