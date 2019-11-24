@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 
 import LoginPage from './pages/LoginPage';
+import CoursesPage from './pages/CoursesPage';
 
 
 class App extends Component {
@@ -15,6 +16,7 @@ class App extends Component {
       <div>
         <Route exact path='/' component={LoginPage}/>
         
+        <Route exact path='/courses/' component={CoursesPage}/>
       </div>
     );
     return (
