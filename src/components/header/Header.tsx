@@ -12,7 +12,7 @@ function Header(props: HeaderProps) {
   return (
     <Navbar variant="dark" bg="dark">
       <Container>
-        <Navbar.Brand href="#">HeyMyTa</Navbar.Brand>
+        <Navbar.Brand href="/">HeyMyTa</Navbar.Brand>
       </Container>
       { props.home &&  (
         <OverlayTrigger trigger="click" placement="left" overlay={RegisterForm}>
