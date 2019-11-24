@@ -7,7 +7,7 @@ class LoginPage extends Component{
   render() {
     return (
       <div>
-        <Header />
+        <Header home={true} />
         <Login isStudent={false} />
       </div>
     );

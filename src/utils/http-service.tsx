@@ -4,9 +4,9 @@ class HttpService {
     service;
     constructor(){
         this.service = axios.create({
-            baseURL: `heymyta-server.glitch.me/`
+            baseURL: `${process.env.SERVER_API_ENDPOINT_BASE}`
         });
-        this.service.defaults.baseURL = 'https://heymyta-server.glitch.me/api'
+        this.service.defaults.baseURL = `${process.env.SERVER_API_ENDPOINT}`
         this.service.interceptors.response.use(this.handleSuccess, this.handleError);
     }
     handleSuccess(res){
