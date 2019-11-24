@@ -1,8 +1,10 @@
 import axios from 'axios';
 
 class HttpService {
-    baseURL = `heymyta-server.glitch.me/api/`;
+    baseURL;
+    service;
     constructor(){
+        this.baseURL = `heymyta-server.glitch.me/api/`;
         // axios.defaults.baseURL = `heymyta-server.glitch.me/`;
         this.service = axios.create({
             baseURL: `heymyta-server.glitch.me/`
