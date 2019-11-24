@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import {
-  Route, Link,
+  Route, 
   Switch, BrowserRouter
 } from 'react-router-dom';
 
@@ -15,8 +15,7 @@ class App extends Component {
   render() {
     const App = () => (
       <div>
-        <Route exact path='/' component={LoginPage}/>
-        
+        <Route exact path='/' component={LoginPage}/>      
         <Route exact path='/courses/' component={CoursesPage}/>
         <Route path='/courses/:courseId' component={CoursePage} />
       </div>
@@ -28,7 +27,6 @@ class App extends Component {
             <App/>
           </Switch>
         </BrowserRouter>
-
       </div>  
     );
   }

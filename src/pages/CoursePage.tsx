@@ -1,18 +1,18 @@
 
 import React, { Component } from 'react';
 import Header from '../components/header/Header';
-import Login from '../components/login/Login';
+import Courses from '../components/courses/Courses';
 
 class CoursePage extends Component{
-    
-    render() {
-      return (
-          <div>
-              <Header />
-
-          </div>
-      );
-    }
+   
+  render() {
+    return (
+      <div>
+        <Header />
+        <Courses />
+      </div>
+    );
+  }
 }
 
 export default CoursePage;

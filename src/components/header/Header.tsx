@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Navbar } from 'reactstrap';
+import { Container, Navbar } from 'react-bootstrap';
 
 function Header() {
   return (
