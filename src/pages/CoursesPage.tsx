@@ -6,9 +6,15 @@ import {
 } from 'react-bootstrap';
 
 
-
 import Header from '../components/header/Header';
 import httpService from '../utils/http-service';
+
+interface RouteInfo {
+    courseId: string;
+}
+
+interface ComponentProps extends RouteComponentProps<RouteInfo> {
+}
 
 interface MyProps {
   
@@ -27,7 +33,7 @@ let CourseListing = (props) => (
           {props.course.desc} <br />
             {"#"} of Active TA: {Object.keys(props.course.activeTeachers).length}
           </Card.Text>
-          <Card.Link href="#">Enter</Card.Link>
+          <Card.Link href={`/courses/${props.course.qid}`}>Enter</Card.Link>
       </Card.Body>
     </Card>
 );

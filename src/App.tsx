@@ -8,6 +8,7 @@ import {
 
 import LoginPage from './pages/LoginPage';
 import CoursesPage from './pages/CoursesPage';
+import CoursePage from './pages/CoursePage';
 
 
 class App extends Component {
@@ -17,6 +18,7 @@ class App extends Component {
         <Route exact path='/' component={LoginPage}/>
         
         <Route exact path='/courses/' component={CoursesPage}/>
+        <Route path='/courses/:courseId' component={CoursePage} />
       </div>
     );
     return (
