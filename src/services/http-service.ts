@@ -1,16 +1,9 @@
-<<<<<<< HEAD
 import axios from 'axios';
 
 class HttpService {
     service;
+    baseURL;
     constructor(){
-<<<<<<< HEAD:src/utils/http-service.tsx
-        this.service = axios.create({
-            baseURL: `${process.env.SERVER_API_ENDPOINT_BASE}`
-        });
-        this.service.defaults.baseURL = `${process.env.SERVER_API_ENDPOINT}`
-        this.service.interceptors.response.use(this.handleSuccess, this.handleError);
-=======
         this.baseURL = `https://heymyta-server.glitch.me/api`;
         // this.baseURL = 'http://locahost:3004/api';
         this.service = axios.create({
@@ -18,7 +11,6 @@ class HttpService {
         });
         this.service.defaults.baseURL = this.baseURL;
         // this.service.interceptors.response.use(this.handleSuccess, this.handleError);
->>>>>>> dat_branch:src/services/http-service.ts
     }
     // handleSuccess(res){
     //     return res.data;
@@ -72,5 +64,3 @@ class HttpService {
 }
 
 export default new HttpService();
-=======
->>>>>>> dat_branch

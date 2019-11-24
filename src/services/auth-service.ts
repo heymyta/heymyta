@@ -72,19 +72,4 @@ class AuthService {
 
 }
 
-// db.runAsync = function (query, param) {
-//   var that = this;  
-//   return new Promise(function (resolve, reject) {
-//       that.run(query, param, function (err) {
-//           if (err){
-//             printDetailError({}, err);
-//             reject(err.message);
-//           }
-//           else{
-//             resolve(this);
-//           }
-            
-//       });
-//   });
-// };
 export default AuthService; 
