@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { 
     Container, Row, 
     Card, CardDeck
-} from 'reactstrap';
+} from 'react-bootstrap';
 
 
 import Header from '../components/header/Header';
@@ -64,7 +64,7 @@ class CoursesPage extends Component<MyProps, MyState>{
 
                 <Header />
                 <Container>
-                    <Row>
+                    <Row className='mt-5'>
                       <CardDeck>
                         {courseList}
                       </CardDeck>
