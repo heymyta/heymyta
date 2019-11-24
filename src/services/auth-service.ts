@@ -18,7 +18,7 @@ class AuthService {
   /**
    * check if current login account is a student or ta or none
    */
-  me(force=false){
+  async me(force=false){
     let payload = (login, type) => {
       return {
         login: this.logedIn,
@@ -31,10 +31,10 @@ class AuthService {
     }
     
 
-    let isTA = await isType(UserType.STUDENT);
+    let isTA = await this.isType(UserType.STUDENT);
     if(isTA) return payload(this.logedIn, this.userType);
     
-    let isStudent = await isType(UserType.TA);
+    let isStudent = await this.isType(UserType.TA);
     if(isStudent) return payload(this.logedIn, this.userType);
     
     return payload(false, UserType.NONE);
@@ -43,6 +43,9 @@ class AuthService {
   async isType(userType=UserType.STUDENT){
     let type = UserType.STUDENT ? "student" : "teacher";
     let api = `/${type}/me`;
+    
+    var that = this;
+    return new Promise(function (resolve, reject) {
     HttpService.get(api, (status, res) => {
       console.log("status", status);
       if(status == 200){
@@ -52,11 +55,23 @@ class AuthService {
       }
       return this.logedIn;
     });
+    }); 
   }
 }
 
-
-export default {
-  UserType,
-  new AuthService()
-}
+db.runAsync = function (query, param) {
+  var that = this;  
+  return new Promise(function (resolve, reject) {
+      that.run(query, param, function (err) {
+          if (err){
+            printDetailError({}, err);
+            reject(err.message);
+          }
+          else{
+            resolve(this);
+          }
+            
+      });
+  });
+};
+export default AuthService; 
