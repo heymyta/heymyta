@@ -7,10 +7,15 @@ import {
 
 
 import Header from '../components/header/Header';
+<<<<<<< HEAD
 import httpService from '../utils/http-service';
+=======
+import httpService from '../services/http-service';
+import AuthService from '../services/auth-service';
+>>>>>>> dat_branch
 
 interface MyProps {
-  
+  auth: AuthService,
 }
   
 interface MyState {
