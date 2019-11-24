@@ -8,9 +8,10 @@ import {
 
 import Header from '../components/header/Header';
 import httpService from '../services/http-service';
+import AuthService from '../services/auth-service';
 
 interface MyProps {
-  
+  auth: AuthService,
 }
   
 interface MyState {

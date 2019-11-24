@@ -1,4 +1,4 @@
-import HttpService from './http-service';
+import httpService from './http-service';
 
 enum UserType {
     STUDENT = "student",
@@ -11,61 +11,65 @@ class AuthService {
   logedIn: boolean;
   connected: boolean;
   constructor(){
-    this.logedIn = false;
+    this.logedIn = null;
     this.userType = UserType.NONE;
     this.connected = false;
   }
   /**
    * check if current login account is a student or ta or none
    */
-  async me(force=false){
+  async whoami(force=false){
     let payload = (login, type) => {
       return {
         login: login,
         type: type
       }
     }
-    
-    console.log('here');
-//     if(this.connected && !force){
-//       return payload(this.logedIn, this.userType);
-//     }
-    
+    this.logedIn = false;
 
-    let isTA = await this.isType(UserType.TA);
+    //use cache
+    // if(this.connected && !force){
+    //   return payload(this.logedIn, this.userType);
+    // }
+    
+    let isTA = await this.isUserType(UserType.TA);
     console.log('isTA', isTA);
     if(isTA) return payload(this.logedIn, this.userType);
     
-    let isStudent = await this.isType(UserType.STUDENT);
+    let isStudent = await this.isUserType(UserType.STUDENT);
     console.log('isStudent', isStudent);
     if(isStudent) return payload(this.logedIn, this.userType);
     
     return payload(false, UserType.NONE);
   }
   
-  async isType(userType=UserType.STUDENT){
-    let type = UserType.STUDENT ? "student" : "teacher";
+  async isUserType(userType=UserType.STUDENT){
+    console.log('userType', userType);
+    let type = (userType===UserType.STUDENT) ? "student" : "teacher";
     let api = `/${type}/me`;
-    
-    let res = await fetch(api);
-    console.log('res');
-    return false;
-    // var that = this;
-    // return new Promise(function (resolve, reject) {
-    //   console.log('api', api);
-    //   HttpService.get(api, (status, res) => {
-    //     console.log("status", res.code, "is", userType, 'res', res);
-    //     if(res.code == 200){
-    //       that.logedIn = true;
-    //       that.userType = userType
-    //       that.connected = true;
-    //       resolve(this);
-    //     }else{
-    //       reject("mess");
-    //     }
-    //   });
-    // }); 
+    let res = await httpService.getAsync(api);
+    console.log("api", api, 'isusertype res', res);
+    if(res.code == 403){
+      return false;
+    }
+    return true;
   }
+
+  async fakeTARegister(name, email, pass){
+    return await httpService.postAsync(`/register`, {
+      username: name,
+      email: email,
+      password: pass
+    });
+  }
+
+  async fakeTAAuth(name='test', pass='test'){
+    return await httpService.postAsync('/teacher/login', {
+      username: name,
+      password: pass
+    });
+  }
+
 }
 
 // db.runAsync = function (query, param) {

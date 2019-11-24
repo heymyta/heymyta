@@ -4,13 +4,19 @@ import Header from '../components/header/Header';
 import Login from '../components/login/Login';
 import AuthService  from '../services/auth-service';
 
-class LoginPage extends Component{
+interface MyProps {
+  auth: AuthService
+}
+  
+interface MyState {
+  courses: Array<any>,
+}
+
+class LoginPage extends Component<MyProps, MyState>{
+  constructor(props){
+    super(props);
+  }
   componentDidMount(){
-    // let authService = new AuthService();
-    // authService.me().then((res) => {
-    //   console.log('whoami', res);
-    // });
-    // console.log('whoami', whoami); 
   }
   render() {
     return (
