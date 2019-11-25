@@ -31,7 +31,7 @@ function Login(props: LoginProps) {
   return (
     <div>
       <Container>
-        <Row className="justify-content-md-center">
+        <Row className="justify-content-md-center mt-5">
           <Form onSubmit={handleSubmit}>
             <Form.Label>Login</Form.Label>
             <Form.Group controlId="formLoginUsername">
