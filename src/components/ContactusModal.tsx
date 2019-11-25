@@ -5,6 +5,8 @@ import {
 } from 'react-bootstrap';
 
 interface MyProps {
+  onHide: any,
+  show: any
 }
 
 function ContactusModal(props: MyProps) {

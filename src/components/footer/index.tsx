@@ -12,12 +12,16 @@ function Footer(props: MyProps) {
   const [modalShow, setModalShow] = useState(false);
 
   return (
-    <>
-      <Button onClick={() => setModalShow(true)}>
-        Contact us
-      </Button>
+    <div style={{bottom: 0, position: 'fixed', width: '100%'}}>
+      <Container className="bg-dark">
+        <Button onClick={() => setModalShow(true)}>
+          Contact us
+        </Button>
+      </Container>
+
+      
       <ContactusModal show={modalShow} onHide={() => setModalShow(false)} />
-    </>
+    </div>
   );
 }
 
