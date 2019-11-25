@@ -4,7 +4,7 @@ class HttpService {
     service;
     baseURL;
     constructor(){
-        this.baseURL = `https://heymyta-server.glitch.me/api`;
+        this.baseURL = `${process.env.REACT_APP_SERVER_API_ENDPOINT}`;
         // this.baseURL = 'http://locahost:3004/api';
         this.service = axios.create({
             withCredentials: true

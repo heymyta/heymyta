@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 //   <Card>yada</Card>
 // );
 
-const REGISTER_ENDPOINT = `${process.env.SERVER_API_ENDPOINT}/api/teacher/register`
+const REGISTER_ENDPOINT = `${process.env.REACT_APP_SERVER_API_ENDPOINT}/api/teacher/register`
  
 function RegisterForm() {
 

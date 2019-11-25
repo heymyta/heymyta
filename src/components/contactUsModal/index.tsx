@@ -9,7 +9,7 @@ interface MyProps {
   show: any
 }
 
-function ContactusModal(props: MyProps) {
+function ContactUsModal(props: MyProps) {
   const onSubmit = () => {
     
   }
@@ -33,4 +33,4 @@ function ContactusModal(props: MyProps) {
   );
 }
 
-export default ContactusModal;
+export default ContactUsModal;

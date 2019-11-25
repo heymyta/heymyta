@@ -4,7 +4,7 @@ import {
   Button
 } from 'react-bootstrap';
 
-import ContactusModal from '../ContactusModal/';
+import ContactUsModal from '../contactUsModal/';
 interface MyProps {
 }
 
@@ -20,7 +20,7 @@ function Footer(props: MyProps) {
       </Container>
 
       
-      <ContactusModal show={modalShow} onHide={() => setModalShow(false)} />
+      <ContactUsModal show={modalShow} onHide={() => setModalShow(false)} />
     </div>
   );
 }
