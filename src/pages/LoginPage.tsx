@@ -24,6 +24,7 @@ class LoginPage extends Component<MyProps, MyState>{
       <div>
         <Header home={true} />
         <Login isStudent={false} />
+        <Footer />
       </div>
     );
   }
