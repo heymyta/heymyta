@@ -5,6 +5,9 @@ import {
 } from 'react-router-dom';
 import Redirecting from './Redirecting';
 
+/**
+ * ProtectedRoute can be access by any user(TA/student) that is logedIn
+ */
 const ProtectedRoute = ({component: Component, ...props}) => {
   let [isAuth, setIsAuth] = useState();
   let [redirect, setRedirect] = useState(false);
