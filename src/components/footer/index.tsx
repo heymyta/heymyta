@@ -16,7 +16,7 @@ function Footer(props: MyProps) {
       <Button onClick={() => setModalShow(true)}>
         Contact us
       </Button>
-      <ContactusModal show={modalShow} onHide{() => setModalShow(false)}
+      <ContactusModal show={modalShow} onHide={() => setModalShow(false)} />
     </>
   );
 }
