@@ -24,7 +24,8 @@ let CourseListing = (props) => (
       <Card.Subtitle className="mb-2 text-muted">Instructor: ...</Card.Subtitle>
       <Card.Text>
       {props.course.desc} <br />
-        {"#"} of Active TA: {Object.keys(props.course.activeTeachers).length}
+        {"#"} of Active TAs: {Object.keys(props.course.activeTeachers).length} <br />
+        {"#"} of Active Students: {Object.keys(props.course.activeStudents).length}
       </Card.Text>
       <Card.Link href={`/courses/${props.course.qid}`}>Enter</Card.Link>
     </Card.Body>

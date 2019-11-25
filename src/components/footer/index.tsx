@@ -4,7 +4,7 @@ import {
   Button
 } from 'react-bootstrap';
 
-import ContactusModal from '../ContactusModal';
+import ContactusModal from '../ContactusModal/';
 interface MyProps {
 }
 
