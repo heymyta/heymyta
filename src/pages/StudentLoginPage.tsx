@@ -20,7 +20,7 @@ function StudentLoginPage(props: LoginProps) {
     httpService.post(LOGIN_ENDPOINT, {
         name: name,
     }, (res) => {
-        console.log('res', res);
+        LoginProps.history.push('/');
     });
   }
 
