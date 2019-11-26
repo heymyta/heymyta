@@ -49,8 +49,8 @@ class App extends Component {
           component={() => 
           <CoursesPage auth={this.authService}/>
         }/>
-          <ProtectedRoute path='/courses/:courseId' 
-            auth={this.authService}
+          <Route path='/courses/:courseId' 
+            // auth={this.authService}
             component={() => 
             <CoursePage auth={this.authService} /> 
           }/>

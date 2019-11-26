@@ -4,6 +4,7 @@ import {
   Container, Row,
   Col
 } from 'react-bootstrap';
+import { cpus } from 'os';
 
 interface StudentProps {
   name: string,
@@ -14,7 +15,7 @@ interface StudentState {
   helping: boolean,
 }
 
-class StudentCard extends Component<StudentProps, StudentState> {
+class StudentQueueCard extends Component<StudentProps, StudentState> {
   constructor(props: StudentProps) {
     super(props);
     this.state = {
@@ -34,19 +35,21 @@ class StudentCard extends Component<StudentProps, StudentState> {
     return( 
       <Toast>
         <Toast.Header closeButton={false}>
-          <strong>{this.state.name}</strong>
-        </Toast.Header>
-        <Toast.Body>
           <Container>
             <Row>
-              <Col md={{ span: 0 }}><Button size="sm" variant="success">Help</Button></Col>
-              <Col md={{ span: 1, offset: 2 }}><Button size="sm" variant="danger">Remove</Button></Col>
+              <Col>
+                <span>{this.state.name}</span>
+              </Col>
+              <Col>
+                <Row><Button size="sm" variant="success">Help</Button></Row>
+                <Row><Button size="sm" variant="danger">Remove</Button></Row>
+              </Col>
             </Row>
           </Container>
-        </Toast.Body>
+        </Toast.Header>
       </Toast>
     );
   }
 }
 
-export default StudentCard;
+export default StudentQueueCard;

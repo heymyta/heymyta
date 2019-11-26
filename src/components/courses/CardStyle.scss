@@ -1,0 +1,55 @@
+@import 'bootstrap/scss/bootstrap';
+
+.status {
+  height: 40px;
+  width: 14px;
+  border-radius: 5px;
+  position: relative;
+  left: 95%;
+  &.available {
+    background-color: $success;
+  }
+  &.working {
+    background-color: $warning;
+  }
+  &.unavailable {
+    background-color: $danger;
+  }
+}
+
+.modal {
+  &-title {
+    font-family: $font-family-sans-serif;
+    font-weight: 400;
+  }
+  &-footer {
+    font-family: $font-family-sans-serif;
+    font-weight: 400;
+    font-size: 24px;
+  }
+}
+
+.courses {
+  &-title {
+    font-family: $font-family-sans-serif !important;
+    font-weight: 300;
+  }
+  &-left-container {
+    margin: 2%;
+  }
+  &-right-container {
+    margin: 2%;
+  }
+}
+
+.btn {
+  width: 75px;
+  position: relative;
+  left: 50%;
+}
+
+.toast {
+  font-family: $font-family-sans-serif !important;
+  font-weight: 300;
+  font-size: 24px; 
+}
