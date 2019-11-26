@@ -2,18 +2,18 @@
 
 .navbar {
   &-base-theme {
-    background-color: red;
+    background-color: $unl-base-theme;
   }
   &-bg-base-theme {
-    background-color: red;
+    background-color: $unl-base-theme;
   }
   &-brand {
     font-size:100px
   }
   &-header {
-    background-color: red;
+    background-color: $unl-base-theme;
   }
 }
 .bg-base-theme {
-  background-color: red !important;
+  background-color: $unl-base-theme !important;
 }
