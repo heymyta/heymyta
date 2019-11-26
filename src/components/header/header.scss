@@ -1,3 +1,19 @@
-.bg-red {
-  background-color: #D00000;
+@import "shared/variables/colors";
+
+.navbar {
+  &-base-theme {
+    background-color: red;
+  }
+  &-bg-base-theme {
+    background-color: red;
+  }
+  &-brand {
+    font-size:100px
+  }
+  &-header {
+    background-color: red;
+  }
+}
+.bg-base-theme {
+  background-color: red !important;
 }

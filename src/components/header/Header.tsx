@@ -13,7 +13,7 @@ interface HeaderProps {
 
 function Header(props: HeaderProps) {
   return (
-    <Navbar variant="dark" bg="dark">
+    <Navbar className="bg-light justify-content-between">
       <Container>
         <Navbar.Brand href="/">HeyMyTa</Navbar.Brand>
         <Nav>

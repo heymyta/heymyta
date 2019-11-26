@@ -38,17 +38,9 @@ class TeacherCard extends Component<TeacherProps, TeacherState> {
     return( 
       <Toast>
         <Toast.Header closeButton={false}>
-          <div className={`label label-${this.state.status === 'available' ? 'success' : this.state.status === 'working' ? 'warning' : 'danger'}`}></div>
-          <strong>{this.state.name}</strong>
+          <div className={`status ${this.state.status}`}></div>
+          <span>{this.state.name}</span>
         </Toast.Header>
-        {/* <Toast.Body>
-          <Container>
-            <Row>
-              <Col md={{ span: 0 }}><Button size="sm" variant="success">Help</Button></Col>
-              <Col md={{ span: 1, offset: 2 }}><Button size="sm" variant="danger">Remove</Button></Col>
-            </Row>
-          </Container>
-        </Toast.Body> */}
       </Toast>
     );
   }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Row, Col, Container } from 'react-bootstrap';
 import HttpService from '../../services/http-service';
+import StudentQueueCard from './StudentQueueCard';
 import StudentCard from './StudentCard';
 import TeacherCard from './TeacherCard';
 
@@ -23,38 +24,58 @@ function Courses(props: CoursesProps) {
   });
 
   return (
-    <Container>
+    <Container fluid>
       <Row>
-        <Col>
+        <Col className="courses-left-container" xl={5}>
+          <Container>
+            <Row>
+              <h1 className="courses-title">CSCE {props.queueId}</h1>
+            </Row>
+            <Row>
+              <h5 className="courses-description">Description:</h5>
+            </Row>
+            <Row>
+              <h2 className="courses-queue-title">Queue Status:</h2>
+            </Row>
+            <Row>
+              <Col>
+                <Modal.Dialog>
+                  <Modal.Header>
+                    <Modal.Title>Active TAs</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <TeacherCard name="Huy" status="available" />
+                    <TeacherCard name="Testing de Crule" status="working" />
+                    <TeacherCard name="Donald Duck" status="unavailable" />
+                  </Modal.Body>
+                </Modal.Dialog>
+              </Col>
+              <Col>
+                <Modal.Dialog>
+                  <Modal.Header>
+                    <Modal.Title>Active Student</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <StudentCard name="Student 1"></StudentCard>
+                    <StudentCard name="Student 2"></StudentCard>
+                    <StudentCard name="Some interesting name"></StudentCard>
+                  </Modal.Body>
+                </Modal.Dialog>
+              </Col>
+            </Row>
+          </Container>
+        </Col>
+        <Col className="courses-right-container" xl={5}>
           <Modal.Dialog>
             <Modal.Header>
-              <Modal.Title>Active TAs</Modal.Title>
+              <Modal.Title>
+                <span>Queue length: {waitingStudents.length}</span>
+              </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <TeacherCard name="TA1" />
-              <TeacherCard name="TA1" status="working" />
-              <TeacherCard name="TA1" status="unavailable" />
+              <StudentQueueCard name="Harry" />
             </Modal.Body>
-          </Modal.Dialog>
-        </Col>
-        <Col>
-         <Modal.Dialog>
-            <Modal.Header>
-              <Modal.Title>Student in Queues</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <StudentCard name="Harry" />
-            </Modal.Body>
-          </Modal.Dialog>
-        </Col>
-        <Col>
-          <Modal.Dialog>
-            <Modal.Header>
-              <Modal.Title>Yada</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-
-            </Modal.Body>
+            <Modal.Footer>Help next inline</Modal.Footer>
           </Modal.Dialog>
         </Col>
       </Row>
