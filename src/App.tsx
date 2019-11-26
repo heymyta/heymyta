@@ -28,6 +28,7 @@ class App extends Component {
 
   componentDidMount(){
     let that = this;
+    console.log('fakeauth');
     this.fakeAuth().then((res) => {
       console.log('fakeAuth res', res)
       that.authService.whoami().then((res) => {
@@ -49,7 +50,7 @@ class App extends Component {
           component={() => 
           <CoursesPage auth={this.authService}/>
         }/>
-          <ProtectedRoute path='/courses/:courseId' 
+          <Route path='/courses/:courseId' 
             auth={this.authService}
             component={() => 
             <CoursePage auth={this.authService} /> 
