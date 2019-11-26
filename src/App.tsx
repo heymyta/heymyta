@@ -8,9 +8,12 @@ import {
 
 import ProtectedRoute from './components/route/ProtectedRoute';
 import AuthService from './services/auth-service';
-import LoginPage from './pages/LoginPage';
+import LandingPage from './pages/LandingPage';
 import CoursesPage from './pages/CoursesPage';
 import CoursePage from './pages/CoursePage';
+import TALoginPage from './pages/TALoginPage';
+import StudentLoginPage from './pages/StudentLoginPage';
+import TaRegistrationPage from './pages/TaRegistrationPage';
 
 
 class App extends Component {
@@ -22,8 +25,8 @@ class App extends Component {
 
   async fakeAuth(){
     // await this.authService.fakeTARegister('test', 'test@test.com', 'test');
-    let auth =  await this.authService.fakeTAAuth('test', 'test');
-    return auth;
+    // let auth =  await this.authService.fakeTAAuth('test', 'test');
+    // return auth;
   }
 
   componentDidMount(){
@@ -44,13 +47,29 @@ class App extends Component {
       <div>
         <Route exact path='/' 
           component={() => 
-          <LoginPage auth={this.authService}/>
+          <LandingPage auth={this.authService}/>
         }/>
+
+        <Route exact path='/teacher/login' 
+          component={() => 
+          <TALoginPage />
+        }/>
+
+        <Route path='/teacher/register/fall2019ta'
+          component={() =>
+            <TaRegistrationPage />
+        }/>
+
+        <Route exact path='/student/login' 
+          component={() => 
+          <StudentLoginPage />
+        }/>
+
         <Route exact path='/courses/' 
           component={() => 
           <CoursesPage auth={this.authService}/>
         }/>
-          <Route path='/courses/:courseId' 
+          <ProtectedRoute path='/courses/:courseId' 
             auth={this.authService}
             component={() => 
             <CoursePage auth={this.authService} /> 

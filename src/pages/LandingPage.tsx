@@ -1,9 +1,13 @@
 
 import React, { Component } from 'react';
 import Header from '../components/header/Header';
-import Login from '../components/login/Login';
 import Footer from '../components/footer';
 import AuthService from '../services/auth-service';
+import { 
+  Form, Button, 
+  Container, Row 
+} from 'react-bootstrap';
+
 
 interface MyProps {
   auth: AuthService
@@ -23,7 +27,18 @@ class LoginPage extends Component<MyProps, MyState>{
     return (
       <div>
         <Header home={true} />
-        <Login isStudent={false} />
+
+        <Container className="mt-5">
+          <Row className="justify-content-md-center">
+            <Button variant="secondary" disabled>
+              TA/Professor get started
+            </Button>
+          </Row>
+          <Row className="justify-content-md-center mt-3">
+            <Button variant="success" onClick={() => {}} >Student get started</Button>
+          </Row>
+        </Container>
+
         <Footer />
       </div>
     );

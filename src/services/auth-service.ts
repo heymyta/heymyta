@@ -63,7 +63,7 @@ class AuthService {
   }
 
   async fakeTARegister(name, email, pass){
-    return await httpService.postAsync(`/register`, {
+    return await httpService.postAsync(`/teacher/register`, {
       username: name,
       email: email,
       password: pass

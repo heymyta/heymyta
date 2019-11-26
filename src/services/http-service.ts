@@ -46,7 +46,7 @@ class HttpService {
           responseType: 'json',
           data: payload
         }).then(
-            (response) => callback(response.status, response.data)
+            (response) => callback(response.data)
         );
     }
 
