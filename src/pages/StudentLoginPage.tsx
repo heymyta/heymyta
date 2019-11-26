@@ -5,7 +5,6 @@ import httpService from '../services/http-service';
 const LOGIN_ENDPOINT = `/student/login`
 
 interface LoginProps {
-  history;
 }
 
 function StudentLoginPage(props: LoginProps) {  
@@ -21,7 +20,7 @@ function StudentLoginPage(props: LoginProps) {
     httpService.post(LOGIN_ENDPOINT, {
         name: name,
     }, (res) => {
-        LoginProps.history.push('/');
+        // LoginProps.history.push('/');
     });
   }
 
