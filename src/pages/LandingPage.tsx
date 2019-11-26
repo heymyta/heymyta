@@ -27,16 +27,18 @@ class LoginPage extends Component<MyProps, MyState>{
     return (
       <div>
         <Header home={true} />
-        <Container>
-          <Row>
-            <Button type="button" variant="secondary" disabled>
+
+        <Container className="mt-5">
+          <Row className="justify-content-md-center">
+            <Button variant="secondary" disabled>
               TA/Professor get started
             </Button>
           </Row>
-          <Row>
+          <Row className="justify-content-md-center mt-3">
             <Button variant="success" onClick={() => {}} >Student get started</Button>
           </Row>
         </Container>
+
         <Footer />
       </div>
     );
