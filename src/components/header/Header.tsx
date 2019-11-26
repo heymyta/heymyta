@@ -14,11 +14,11 @@ interface HeaderProps {
 function Header(props: HeaderProps) {
   return (
     <Navbar className="bg-light justify-content-between">
-      <Container>
+      <Container fluid>
         <Navbar.Brand href="/">HeyMyTa</Navbar.Brand>
         <Nav>
-          <Link className="btn btn-primary mr-3" to="/teacher/login" role="button">TA/Professor Login</Link>
-          <Link className="btn btn-primary"  to="/student/login">Student login</Link>
+          <Link className="btn btn-primary mr-3 btn-home" to="/teacher/login" role="button">TA/Professor Login</Link>
+          <Link className="btn btn-primary btn-home"  to="/student/login">Student login</Link>
         </Nav>
       </Container>
     </Navbar>

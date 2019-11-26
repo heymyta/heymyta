@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   Container, Modal,
-  Button, Row
+  Button
 } from 'react-bootstrap';
 
 import ContactUsModal from '../contactUsModal/';
@@ -26,15 +26,12 @@ function Footer(props: MyProps) {
       <hr className="featurette-divider" />
       
       <footer className="text-muted" >
-        <div className="container">
-        <Row>
-          <p>
-            <Button variant="link" onClick={() => setModalShow(true)}>
-              Contact us
-            </Button>
-          </p>
-          </Row>
-        </div>
+
+        <Container fluid>
+          <Button variant="link" onClick={() => setModalShow(true)}>
+            Contact us
+          </Button>
+        </Container>
       </footer>
       
       <ContactUsModal show={modalShow} onHide={() => setModalShow(false)} />
