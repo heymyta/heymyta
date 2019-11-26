@@ -1,7 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Modal, Row, Col, Container } from 'react-bootstrap';
+import httpService from '../../utils/http-service';
+import StudentCard from './StudentCard';
+import TeacherCard from './TeacherCard';
 
-function Courses() {
+interface CoursesProps {
+  queueId?: number,
+}
+
+function Courses(props: CoursesProps) {
+  const path = `/queue/get/${props.queueId}`;
+  const [activeStudents, setActiveStudents] = useState('');
+  const [waitingStudents, setWaitingStudents] = useState('');
+  const [activeTeachers, setActiveTeachers] = useState('');
+
+  httpService.get(path, (res) => {
+    if (res.msg === 'OK') {
+      setActiveStudents(res.queue.waitingStudents);
+      setActiveTeachers(res.queue.activeTeachers);
+      setWaitingStudents(res.queue.waitingStudents);
+    }
+  });
+
   return (
     <Container>
       <Row>
@@ -11,7 +31,9 @@ function Courses() {
               <Modal.Title>Active TAs</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-
+              <TeacherCard name="TA1" />
+              <TeacherCard name="TA1" status="working" />
+              <TeacherCard name="TA1" status="unavailable" />
             </Modal.Body>
           </Modal.Dialog>
         </Col>
@@ -21,7 +43,7 @@ function Courses() {
               <Modal.Title>Student in Queues</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-
+              <StudentCard name="Harry" />
             </Modal.Body>
           </Modal.Dialog>
         </Col>
