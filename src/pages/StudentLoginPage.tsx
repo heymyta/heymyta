@@ -5,6 +5,7 @@ import httpService from '../services/http-service';
 const LOGIN_ENDPOINT = `/student/login`
 
 interface LoginProps {
+  history;
 }
 
 function StudentLoginPage(props: LoginProps) {  
