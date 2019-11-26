@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Row, Col, Container } from 'react-bootstrap';
-import httpService from '../../utils/http-service';
+import HttpService from '../../services/http-service';
 import StudentCard from './StudentCard';
 import TeacherCard from './TeacherCard';
 
@@ -14,7 +14,7 @@ function Courses(props: CoursesProps) {
   const [waitingStudents, setWaitingStudents] = useState('');
   const [activeTeachers, setActiveTeachers] = useState('');
 
-  httpService.get(path, (res) => {
+  HttpService.get(path, (res) => {
     if (res.msg === 'OK') {
       setActiveStudents(res.queue.waitingStudents);
       setActiveTeachers(res.queue.activeTeachers);
