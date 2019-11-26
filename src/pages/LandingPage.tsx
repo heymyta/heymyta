@@ -27,7 +27,7 @@ class LoginPage extends Component<MyProps, MyState>{
     return (
       <div>
         <Header home={true} />
-        <Container fluid>
+        <Container>
           <Row>
             <Button type="button" variant="secondary" disabled>
               TA/Professor get started
