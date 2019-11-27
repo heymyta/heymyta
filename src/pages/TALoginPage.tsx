@@ -3,6 +3,7 @@ import {
   useHistory
 } from 'react-router-dom';
 import { Form, Button, Container, Row } from 'react-bootstrap';
+import Header from '../components/header/Header';
 import AuthService from '../services/auth-service';
 
 interface LoginProps {
@@ -34,6 +35,7 @@ function TALoginPage(props: LoginProps) {
 
   return (
     <div>
+      <Header auth={props.auth} />
       <Container>
         <Row className="justify-content-md-center mt-5">
           <Form onSubmit={handleSubmit}>

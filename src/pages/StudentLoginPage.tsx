@@ -7,6 +7,7 @@ import {
   useHistory
 } from 'react-router-dom';
 
+import Header from '../components/header/Header';
 import AuthService from '../services/auth-service';
 interface LoginProps {
   auth : AuthService;
@@ -35,6 +36,7 @@ function StudentLoginPage(props: LoginProps) {
 
   return (
     <div>
+      <Header auth={props.auth} />
       <Container>
         <Row className="justify-content-md-center mt-5">
           <Form onSubmit={handleSubmit}>
