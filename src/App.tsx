@@ -3,7 +3,8 @@ import './App.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import {
   Route, 
-  Switch, BrowserRouter
+  Switch, BrowserRouter,
+  useHistory
 } from 'react-router-dom';
 
 import ProtectedRoute from './components/route/ProtectedRoute';

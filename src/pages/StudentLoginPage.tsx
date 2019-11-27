@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
-import { Form, Button, Container, Row } from 'react-bootstrap';
+import { 
+  Form, Button, 
+  Container, Row 
+} from 'react-bootstrap';
 import httpService from '../services/http-service';
-
+import {
+  useHistory
+} from 'react-router-dom';
 const LOGIN_ENDPOINT = `/student/login`
 
 interface LoginProps {
@@ -9,7 +14,7 @@ interface LoginProps {
 
 function StudentLoginPage(props: LoginProps) {  
   const [name, setName] = useState('');
-
+  const history = useHistory();
 
   function validateForm() {
     return (name.length > 0);
@@ -20,7 +25,9 @@ function StudentLoginPage(props: LoginProps) {
     httpService.post(LOGIN_ENDPOINT, {
         name: name,
     }, (res) => {
-        // LoginProps.history.push('/');
+        
+        history.push('/courses');
+      console.log('res', res);
     });
   }
 
