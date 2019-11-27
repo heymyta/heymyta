@@ -1,10 +1,14 @@
-import React, { Component } from 'react';
+import React, { 
+  useEffect, useState
+} from 'react';
+
+//global css
 import './App.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
 import {
   Route, 
-  Switch, BrowserRouter,
-  useHistory
+  Switch, BrowserRouter
 } from 'react-router-dom';
 
 import ProtectedRoute from './components/route/ProtectedRoute';
@@ -16,77 +20,55 @@ import TALoginPage from './pages/TALoginPage';
 import StudentLoginPage from './pages/StudentLoginPage';
 import TaRegistrationPage from './pages/TaRegistrationPage';
 
+interface Props{
+  auth : AuthService;
+}
+const App = (props) => {
 
-class App extends Component {
-  authService;
-  constructor(props){
-    super(props);
-    this.authService = new AuthService();
-  }
 
-  async fakeAuth(){
-    // await this.authService.fakeTARegister('test', 'test@test.com', 'test');
-    // let auth =  await this.authService.fakeTAAuth('test', 'test');
-    // return auth;
-  }
+  const AllRoute = () => (
+    <div>
+      <Route exact path='/' 
+        component={() => 
+        <LandingPage auth={props.auth}/>
+      }/>
 
-  componentDidMount(){
-    let that = this;
-    console.log('fakeauth');
-    this.fakeAuth().then((res) => {
-      console.log('fakeAuth res', res)
-      that.authService.whoami().then((res) => {
-        console.log("whoami", res);
-        console.log('logined', that.authService.logedIn);
-      });
-    })
+      <Route exact path='/teacher/login' 
+        component={() => 
+        <TALoginPage auth={props.auth}/>
+      }/>
 
-  }
+      <Route path='/teacher/register/fall2019ta'
+        component={() =>
+          <TaRegistrationPage auth={props.auth}/>
+      }/>
 
-  render() {
-    const App = () => (
-      <div>
-        <Route exact path='/' 
+      <Route exact path='/student/login' 
+        component={() => 
+        <StudentLoginPage auth={props.auth}/>
+      }/>
+
+      <Route exact path='/courses/' 
+        auth={props.auth}
+        component={() => 
+        <CoursesPage auth={props.auth}/>
+      }/>
+        <ProtectedRoute path='/courses/:courseId' 
+          auth={props.auth}
           component={() => 
-          <LandingPage auth={this.authService}/>
+          <CoursePage auth={props.auth} /> 
         }/>
-
-        <Route exact path='/teacher/login' 
-          component={() => 
-          <TALoginPage />
-        }/>
-
-        <Route path='/teacher/register/fall2019ta'
-          component={() =>
-            <TaRegistrationPage />
-        }/>
-
-        <Route exact path='/student/login' 
-          component={() => 
-          <StudentLoginPage />
-        }/>
-
-        <Route exact path='/courses/' 
-          component={() => 
-          <CoursesPage auth={this.authService}/>
-        }/>
-          <ProtectedRoute path='/courses/:courseId' 
-            auth={this.authService}
-            component={() => 
-            <CoursePage auth={this.authService} /> 
-          }/>
-      </div>
-    );
-    return (
-      <div>
-        <BrowserRouter>
-          <Switch>
-            <App/>
-          </Switch>
-        </BrowserRouter>
-      </div>  
-    );
-  }
+    </div>
+  );
+  return (
+    <div>
+      <BrowserRouter>
+        <Switch>
+          <AllRoute/>
+        </Switch>
+      </BrowserRouter>
+    </div>  
+  );
 }
 
 export default App;

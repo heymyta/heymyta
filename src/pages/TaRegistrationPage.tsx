@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row } from 'react-bootstrap';
-import httpService from '../services/http-service';
+import AuthService from '../services/auth-service';
 
 const LOGIN_ENDPOINT = `/teacher/login`
 
 interface LoginProps {
+  auth : AuthService;
 }
 
 function TaRegistrationPage(props: LoginProps) {  
@@ -19,14 +20,7 @@ function TaRegistrationPage(props: LoginProps) {
 
   function handleSubmit(event: Event) {
     event.preventDefault();
-    httpService.post(LOGIN_ENDPOINT, {
-        name: name,
-        username: username, 
-        password: password,
-        invite_code: 'fall2019ta'
-    }, (res) => {
-        console.log('res', res);
-    });
+    props.auth.handleTaRegister({name: name, username: username, password: password});
   }
 
   return (

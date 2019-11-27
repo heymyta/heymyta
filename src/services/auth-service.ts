@@ -11,15 +11,60 @@ class AuthService {
   logedIn: boolean;
   connected: boolean;
   constructor(){
-    this.logedIn = null;
+    this.logedIn = false;
     this.userType = UserType.NONE;
     this.connected = false;
+  }
+
+  async handleTaLogin(username, password){
+    let that = this;
+    this.logedIn = false;
+    this.userType = UserType.NONE;
+    return httpService.post('/teacher/login', {
+      username: username, 
+      password: password,
+    }).then((res) => {
+      if(res.code == 0){
+        that.connected = true;
+        that.logedIn = true;
+        that.userType = UserType.TA;
+      }
+      return res;
+    });
+  }
+
+  async handleLogout(){
+    return httpService.get('/logout')
+    .then((res) => {
+      this.logedIn = false;
+      this.connected = false;
+      this.userType = UserType.NONE;
+      return res
+    })
+  }
+  async handleStudentLogin(name){
+    let that = this;
+    this.logedIn = false;
+    this.userType = UserType.NONE;
+    return httpService.post('/student/login', {
+      name: name
+    }).then((res) => {
+      if(res.code == 0){
+        that.connected = true;
+        that.logedIn = true;
+        that.userType = UserType.STUDENT;
+      }
+      return res;
+    });
   }
   /**
    * check if current login account is a student or ta or none
    * force: = true. force to reconnect and check for authentication
    */
-  async whoami(force=false){
+  async whoami(force=false, fakeauth=false){
+    if(fakeauth){
+      await this.fakeAuth();
+    }
     let payload = (logedIn, userType) => {
       return {
         logedIn: logedIn,
@@ -62,6 +107,16 @@ class AuthService {
     return true;
   }
 
+  handleTaRegister({name, username, password}){
+    httpService.post('/teacher/register', {
+      name: name,
+      username: username, 
+      password: password,
+      invite_code: 'fall2019ta'
+    }).then((res) => {
+      console.log('res', res);
+    });
+  }
   async fakeTARegister(name, email, pass){
     return await httpService.postAsync(`/teacher/register`, {
       username: name,
@@ -76,11 +131,12 @@ class AuthService {
       password: pass
     });
   }
-  
-  async forceLogout(){
-    return await httpService.getAsync('/logout');
-  }
 
+  async fakeAuth(){
+    await this.fakeTARegister('test', 'test@test.com', 'test');
+    let auth =  await this.fakeTAAuth('test', 'test');
+    return auth;
+  }
 }
 
 export default AuthService; 

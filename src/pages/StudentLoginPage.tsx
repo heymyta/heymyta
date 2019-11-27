@@ -3,32 +3,34 @@ import {
   Form, Button, 
   Container, Row 
 } from 'react-bootstrap';
-import httpService from '../services/http-service';
 import {
   useHistory
 } from 'react-router-dom';
-const LOGIN_ENDPOINT = `/student/login`
 
+import AuthService from '../services/auth-service';
 interface LoginProps {
+  auth : AuthService;
 }
 
 function StudentLoginPage(props: LoginProps) {  
   const [name, setName] = useState('');
+  const [msg, setMsg] = useState('');
   const history = useHistory();
 
   function validateForm() {
     return (name.length > 0);
   }
 
-  function handleSubmit(event: Event) {
+  async function handleSubmit(event: Event) {
     event.preventDefault();
-    httpService.post(LOGIN_ENDPOINT, {
-        name: name,
-    }, (res) => {
-        
-        history.push('/courses');
-      console.log('res', res);
-    });
+    await props.auth.handleStudentLogin(name)
+          .then((res) => {
+            if(res.code == 0){
+              history.push('/courses');
+            }else{
+              setMsg(res.msg);
+            }
+          });
   }
 
   return (
@@ -49,7 +51,7 @@ function StudentLoginPage(props: LoginProps) {
             <Button variant="primary" disabled={!validateForm()} type="submit">
               Login
             </Button>
-            <Form.Control.Feedback type="valid">You did it!</Form.Control.Feedback>
+            <p style={{color:'red'}}>{msg}</p>
           </Form>
         </Row>
       </Container>

@@ -15,13 +15,13 @@ function Courses(props: CoursesProps) {
   const [waitingStudents, setWaitingStudents] = useState('');
   const [activeTeachers, setActiveTeachers] = useState('');
 
-  HttpService.get(path, (res) => {
+  HttpService.get(path).then((res) => {
     if (res.msg === 'OK') {
       setActiveStudents(res.queue.waitingStudents);
       setActiveTeachers(res.queue.activeTeachers);
       setWaitingStudents(res.queue.waitingStudents);
     }
-  });
+  })
 
   return (
     <Container fluid>

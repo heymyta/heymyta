@@ -16,7 +16,7 @@ class CoursePage extends Component<MyProps, MyState>{
   render() {
     return (
       <div>
-        <Header />
+        <Header auth={this.props.auth}/>
         <Courses />
       </div>
     );

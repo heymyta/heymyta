@@ -1,29 +1,35 @@
 import React, { useState } from 'react';
+import {
+  useHistory
+} from 'react-router-dom';
 import { Form, Button, Container, Row } from 'react-bootstrap';
-import httpService from '../services/http-service';
-
-const LOGIN_ENDPOINT = `/teacher/login`
+import AuthService from '../services/auth-service';
 
 interface LoginProps {
+  auth : AuthService;
 }
 
 function TALoginPage(props: LoginProps) {  
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [msg, setMsg] = useState('');
 
-
+  let history = useHistory();
   function validateForm() {
     return (username.length > 0 && password.length > 0);
   }
 
-  function handleSubmit(event: Event) {
+  async function handleSubmit(event: Event) {
     event.preventDefault();
-    httpService.post(LOGIN_ENDPOINT, {
-        username: username, 
-        password: password,
-    }, (res) => {
-        console.log('res', res);
-    });
+    await props.auth.handleTaLogin(username, password)
+          .then((res) => {
+            console.log('res ta login', res);
+            if(res.code == 0){
+              history.push('/courses');
+            }else{
+              setMsg(res.msg);
+            }
+          });
   }
 
   return (
@@ -52,7 +58,7 @@ function TALoginPage(props: LoginProps) {
             <Button variant="primary" disabled={!validateForm()} type="submit">
               Login
             </Button>
-            <Form.Control.Feedback type="valid">You did it!</Form.Control.Feedback>
+            <p style={{color:'red'}}>{msg}</p>
           </Form>
         </Row>
       </Container>

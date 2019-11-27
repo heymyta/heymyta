@@ -39,14 +39,12 @@ class CoursesPage extends Component<MyProps, MyState>{
       courses : [],
     }
     this.getCourses = this.getCourses.bind(this);
-    
-
   }
 
   async getCourses(){
     let $this = this;
-    httpService.get(`/queue/get_all?full=true`,
-      (status, res) => {
+    httpService.get(`/queue/get_all?full=true`)
+      .then((res) => {
         $this.setState({
           courses: res.queues,
         });
@@ -65,7 +63,7 @@ class CoursesPage extends Component<MyProps, MyState>{
     );
     return (
       <div>
-        <Header />
+        <Header auth={this.props.auth}/>
         <Container>
           <Row className='mt-5'>
             <CardDeck>

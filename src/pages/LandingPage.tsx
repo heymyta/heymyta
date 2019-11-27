@@ -1,5 +1,11 @@
 
-import React, { Component } from 'react';
+import React, { 
+  useEffect
+} from 'react';
+import {
+  useHistory,
+} from 'react-router-dom';
+
 import Header from '../components/header/Header';
 import Footer from '../components/footer';
 import AuthService from '../services/auth-service';
@@ -9,40 +15,37 @@ import {
 } from 'react-bootstrap';
 
 
-interface MyProps {
+interface LandingPageProps {
   auth: AuthService
 }
+
+const LandingPage = (props:LandingPageProps) => {
+  let history = useHistory();
+
   
-interface MyState {
-  courses: Array<any>,
-}
+  useEffect(() => {
+    //redirect if already login
+    if(props.auth.logedIn){
+      history.push('/courses');
+    }
+  }, [history]);
 
-class LoginPage extends Component<MyProps, MyState>{
-  constructor(props){
-    super(props);
-  }
-  componentDidMount(){
-  }
-  render() {
-    return (
-      <div>
-        <Header home={true} />
+  return (
+    <div>
+      <Header auth={props.auth} home={true} />
+      <Container className="mt-5">
+        <Row className="justify-content-md-center">
+          <Button variant="secondary" disabled>
+            TA/Professor get started
+          </Button>
+        </Row>
+        <Row className="justify-content-md-center mt-3">
+          <Button variant="success" onClick={() => {}} >Student get started</Button>
+        </Row>
+      </Container>
 
-        <Container className="mt-5">
-          <Row className="justify-content-md-center">
-            <Button variant="secondary" disabled>
-              TA/Professor get started
-            </Button>
-          </Row>
-          <Row className="justify-content-md-center mt-3">
-            <Button variant="success" onClick={() => {}} >Student get started</Button>
-          </Row>
-        </Container>
-
-        <Footer />
-      </div>
-    );
-  }
-}
-
-export default LoginPage;
+      <Footer />
+    </div>
+  );
+};
+export default LandingPage;
