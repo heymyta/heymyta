@@ -108,13 +108,12 @@ class AuthService {
   }
 
   handleTaRegister({name, username, password}){
-    httpService.post('/teacher/register', {
+    return httpService.post('/teacher/register', {
       name: name,
+      email: 'dummy_email@dummy.dummy',
       username: username, 
       password: password,
       invite_code: 'fall2019ta'
-    }).then((res) => {
-      console.log('handleTaRegister', res);
     });
   }
   async fakeTARegister(name, email, pass){

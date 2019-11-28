@@ -13,14 +13,27 @@ function TaRegistrationPage(props: LoginProps) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmedPassword, setConfirmedPassword] = useState('');
-
+  const [msg, setMsg] = useState('');
   function validateForm() {
     return name.length > 0 && (password === confirmedPassword) && username.length > 0 && password.length > 0;
   }
 
   function handleSubmit(event: Event) {
     event.preventDefault();
-    props.auth.handleTaRegister({name: name, username: username, password: password});
+    props.auth.handleTaRegister({
+      name: name,
+      username: username, 
+      password: password
+    }).then((res) => {
+      console.log('res', res);
+      if (res.code == 0){
+        setMsg('great');
+        return res;
+      } else{
+        setMsg(res.msg);
+        return res;
+      }
+    });
   }
 
   return (
@@ -67,6 +80,7 @@ function TaRegistrationPage(props: LoginProps) {
             <Button variant="primary" disabled={!validateForm()} type="submit">
               Login
             </Button>
+            <p style={{color:'red'}}>{msg}</p>
             <Form.Control.Feedback type="valid">You did it!</Form.Control.Feedback>
           </Form>
         </Row>
