@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row } from 'react-bootstrap';
 import AuthService from '../services/auth-service';
-
+import {
+  useHistory
+} from 'react-router-dom';
 const LOGIN_ENDPOINT = `/teacher/login`
 
 interface LoginProps {
@@ -14,6 +16,8 @@ function TaRegistrationPage(props: LoginProps) {
   const [password, setPassword] = useState('');
   const [confirmedPassword, setConfirmedPassword] = useState('');
   const [msg, setMsg] = useState('');
+  const history = useHistory();
+  
   function validateForm() {
     return name.length > 0 && (password === confirmedPassword) && username.length > 0 && password.length > 0;
   }
@@ -24,10 +28,12 @@ function TaRegistrationPage(props: LoginProps) {
       name: name,
       username: username, 
       password: password
-    }).then((res) => {
+    }).then(async (res) => {
       console.log('res', res);
       if (res.code == 0){
         setMsg('great');
+        await props.auth.handleTaLogin(username, password);
+        history.push('/courses');
         return res;
       } else{
         setMsg(res.msg);
