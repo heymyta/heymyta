@@ -114,7 +114,7 @@ class AuthService {
       password: password,
       invite_code: 'fall2019ta'
     }).then((res) => {
-      console.log('res', res);
+      console.log('handleTaRegister', res);
     });
   }
   async fakeTARegister(name, email, pass){

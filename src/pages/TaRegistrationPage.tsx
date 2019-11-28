@@ -15,7 +15,7 @@ function TaRegistrationPage(props: LoginProps) {
   const [confirmedPassword, setConfirmedPassword] = useState('');
 
   function validateForm() {
-    return (username.length > 0 && password.length > 0);
+    return name.length > 0 && (password === confirmedPassword) && username.length > 0 && password.length > 0;
   }
 
   function handleSubmit(event: Event) {
