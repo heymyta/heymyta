@@ -19,9 +19,10 @@ function Courses(props: CoursesProps) {
     console.log('res', res);
     if (res.code === 0) {
       
-      setActiveStudents(res.queue.waitingStudents);
-      setActiveTeachers(res.queue.activeTeachers);
-      setWaitingStudents(res.queue.waitingStudents);
+      //causing infinite GET request
+      // setActiveStudents(res.queue.waitingStudents);
+      // setActiveTeachers(res.queue.activeTeachers);
+      // setWaitingStudents(res.queue.waitingStudents);
     }
     console.log('activeStudents', activeStudents);
     console.log('activeTeachers', activeTeachers);
