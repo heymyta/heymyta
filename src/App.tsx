@@ -55,8 +55,8 @@ const App = (props) => {
       }/>
         <ProtectedRoute path='/courses/:courseId' 
           auth={props.auth}
-          component={() => 
-          <CoursePage auth={props.auth} /> 
+          component={(props) => 
+          <CoursePage auth={props.auth} {...props}/> 
         }/>
     </div>
   );

@@ -6,21 +6,25 @@ import StudentCard from './StudentCard';
 import TeacherCard from './TeacherCard';
 
 interface CoursesProps {
-  queueId?: number,
+  courseId: number,
 }
 
 function Courses(props: CoursesProps) {
-  const path = `/queue/get/${props.queueId}`;
+  const path = `/queue/get/${props.courseId}`;
   const [activeStudents, setActiveStudents] = useState('');
   const [waitingStudents, setWaitingStudents] = useState('');
   const [activeTeachers, setActiveTeachers] = useState('');
-
+  console.log('path', path);
   HttpService.get(path).then((res) => {
-    if (res.msg === 'OK') {
+    console.log('res', res);
+    if (res.code === 0) {
+      
       setActiveStudents(res.queue.waitingStudents);
       setActiveTeachers(res.queue.activeTeachers);
       setWaitingStudents(res.queue.waitingStudents);
     }
+    console.log('activeStudents', activeStudents);
+    console.log('activeTeachers', activeTeachers);
   })
 
   return (
@@ -29,7 +33,7 @@ function Courses(props: CoursesProps) {
         <Col className="courses-left-container" xl={5}>
           <Container>
             <Row>
-              <h1 className="courses-title">CSCE {props.queueId}</h1>
+              <h1 className="courses-title">CSCE {props.courseId}</h1>
             </Row>
             <Row>
               <h5 className="courses-description">Description:</h5>
