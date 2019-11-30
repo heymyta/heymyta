@@ -12,8 +12,8 @@ interface CoursesProps {
 
 function Courses(props: CoursesProps) {
   const path = `/queue/get/${props.courseId}`;
-  const [activeStudents, setActiveStudents] = useState({});
   const [waitingStudents, setWaitingStudents] = useState([]);
+  const [activeStudents, setActiveStudents] = useState({});
   const [activeTeachers, setActiveTeachers] = useState({});
   console.log('path', path);
   
@@ -21,7 +21,7 @@ function Courses(props: CoursesProps) {
     HttpService.get(path).then((res) => {
       if (res.code === 0) {
         if(!_.isEqual(res.queue.waitingStudents, waitingStudents) ){
-          setActiveStudents(res.queue.waitingStudents);
+          setWaitingStudents(res.queue.waitingStudents);
         }
 
         if(!_.isEqual(res.queue.activeTeachers, activeTeachers) ){
@@ -36,6 +36,24 @@ function Courses(props: CoursesProps) {
       console.log('activeTeachers', activeTeachers);
     })
   }, []);
+
+  let teacherCards = [], studentCards = [];
+  if(activeTeachers){
+    for (const [teacherId, teacher] of Object.entries(activeTeachers)) {
+      console.log('teacher', teacher);
+        teacherCards.push(
+          <TeacherCard name={teacher['username']} status={teacher['status']} />
+        );
+    } 
+  }
+  if(activeStudents){
+    for (const [studentId, student] of Object.entries(activeStudents)) {
+      console.log('student', student);
+        studentCards.push(
+          <StudentCard name={student['username']} />
+        );
+    }
+  }
 
   return (
     <Container fluid>
@@ -58,9 +76,7 @@ function Courses(props: CoursesProps) {
                     <Modal.Title>Active TAs</Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
-                    <TeacherCard name="Huy" status="available" />
-                    <TeacherCard name="Testing de Crule" status="working" />
-                    <TeacherCard name="Donald Duck" status="unavailable" />
+                    {teacherCards}
                   </Modal.Body>
                 </Modal.Dialog>
               </Col>
@@ -70,9 +86,7 @@ function Courses(props: CoursesProps) {
                     <Modal.Title>Active Student</Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
-                    <StudentCard name="Student 1"></StudentCard>
-                    <StudentCard name="Student 2"></StudentCard>
-                    <StudentCard name="Some interesting name"></StudentCard>
+                    {studentCards}
                   </Modal.Body>
                 </Modal.Dialog>
               </Col>

@@ -35,7 +35,7 @@ class StudentCard extends Component<StudentProps, StudentState> {
     return( 
       <Toast>
         <Toast.Header closeButton={false}>
-          <span>{this.state.name}</span>
+          <span>{this.props.name}</span>
         </Toast.Header>
       </Toast>
     );
