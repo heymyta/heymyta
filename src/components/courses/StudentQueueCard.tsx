@@ -28,7 +28,7 @@ class StudentQueueCard extends Component<StudentProps, StudentState> {
     this.setState({
       name: this.props.name,
       helping: false
-    })
+    });
   }
 
   render() {
@@ -38,7 +38,7 @@ class StudentQueueCard extends Component<StudentProps, StudentState> {
           <Container>
             <Row>
               <Col>
-                <span>{this.state.name}</span>
+                <span>{this.props.name}</span>
               </Col>
               <Col>
                 <Row><Button size="sm" variant="success">Help</Button></Row>

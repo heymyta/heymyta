@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Modal, Row, Col, Container } from 'react-bootstrap';
 import HttpService from '../../services/http-service';
 import StudentQueueCard from './StudentQueueCard';
@@ -11,19 +11,22 @@ interface CoursesProps {
 }
 
 function Courses(props: CoursesProps) {
-  const path = `/queue/get/${props.courseId}`;
+  const delay = 3000;
+  let path = `/queue/get/${props.courseId}`;
+  let [longPoll, setLongPoll] = useState(false);
   const [waitingStudents, setWaitingStudents] = useState([]);
   const [activeStudents, setActiveStudents] = useState({});
   const [activeTeachers, setActiveTeachers] = useState({});
-  console.log('path', path);
+  const timerId = useRef<any>();
+  console.log('timerId', timerId);
+  if(timerId.current != null){
+    path += `?longpoll=true`;
+  }
   
-  useEffect(() => {
+  let updateActiveTeacherStudentAndWaitingStudent = () => {
     HttpService.get(path).then((res) => {
       if (res.code === 0) {
-        if(!_.isEqual(res.queue.waitingStudents, waitingStudents) ){
-          setWaitingStudents(res.queue.waitingStudents);
-        }
-
+        setLongPoll(true);
         if(!_.isEqual(res.queue.activeTeachers, activeTeachers) ){
           setActiveTeachers(res.queue.activeTeachers);
         }
@@ -31,28 +34,48 @@ function Courses(props: CoursesProps) {
         if(!_.isEqual(res.queue.activeStudents, activeStudents) ){
           setActiveStudents(res.queue.activeStudents);
         }
-      }
-      console.log('activeStudents', activeStudents);
-      console.log('activeTeachers', activeTeachers);
-    })
-  }, []);
 
-  let teacherCards = [], studentCards = [];
-  if(activeTeachers){
-    for (const [teacherId, teacher] of Object.entries(activeTeachers)) {
-      console.log('teacher', teacher);
-        teacherCards.push(
-          <TeacherCard name={teacher['username']} status={teacher['status']} />
-        );
-    } 
+        if(!_.isEqual(res.queue.waitingStudents, waitingStudents) ){
+          setWaitingStudents(res.queue.waitingStudents);
+        }
+      }
+    });
   }
-  if(activeStudents){
-    for (const [studentId, student] of Object.entries(activeStudents)) {
-      console.log('student', student);
-        studentCards.push(
-          <StudentCard name={student['username']} />
-        );
+
+  useEffect(() => {
+    if(!longPoll){
+      updateActiveTeacherStudentAndWaitingStudent();
     }
+    //using data longpolling
+    timerId.current = setInterval(() => {
+      updateActiveTeacherStudentAndWaitingStudent();
+    }, delay);
+
+    return () => {
+      clearTimeout(timerId.current)
+      timerId.current = null;
+    }
+  });
+
+  let teacherCards = [], studentCards = [], waitingStudentCards = [];
+
+  for (const [teacherId, teacher] of Object.entries(activeTeachers)) {
+      teacherCards.push(
+        <TeacherCard name={teacher['username']} status={teacher['status']} />
+      );
+  } 
+
+  for (const [studentId, student] of Object.entries(activeStudents)) {
+      studentCards.push(
+        <StudentCard name={student['username']} />
+      );
+  }
+
+
+  for (const studentId of waitingStudents){
+    waitingStudentCards.push(
+      <StudentQueueCard name={activeStudents[studentId]['username']} />
+    )
   }
 
   return (
@@ -101,7 +124,7 @@ function Courses(props: CoursesProps) {
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <StudentQueueCard name="Harry" />
+              {waitingStudentCards}
             </Modal.Body>
             <Modal.Footer>Help next inline</Modal.Footer>
           </Modal.Dialog>
