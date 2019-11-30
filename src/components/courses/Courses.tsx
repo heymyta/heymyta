@@ -4,6 +4,7 @@ import HttpService from '../../services/http-service';
 import StudentQueueCard from './StudentQueueCard';
 import StudentCard from './StudentCard';
 import TeacherCard from './TeacherCard';
+import _ from 'lodash';
 
 interface CoursesProps {
   courseId: number,
@@ -11,24 +12,30 @@ interface CoursesProps {
 
 function Courses(props: CoursesProps) {
   const path = `/queue/get/${props.courseId}`;
-  const [activeStudents, setActiveStudents] = useState('');
-  const [waitingStudents, setWaitingStudents] = useState('');
-  const [activeTeachers, setActiveTeachers] = useState('');
+  const [activeStudents, setActiveStudents] = useState({});
+  const [waitingStudents, setWaitingStudents] = useState([]);
+  const [activeTeachers, setActiveTeachers] = useState({});
   console.log('path', path);
   
   useEffect(() => {
     HttpService.get(path).then((res) => {
-      console.log('res', res);
       if (res.code === 0) {
-        //causing infinite GET request
-        setActiveStudents(res.queue.waitingStudents);
-        setActiveTeachers(res.queue.activeTeachers);
-        setWaitingStudents(res.queue.waitingStudents);
+        if(!_.isEqual(res.queue.waitingStudents, waitingStudents) ){
+          setActiveStudents(res.queue.waitingStudents);
+        }
+
+        if(!_.isEqual(res.queue.activeTeachers, activeTeachers) ){
+          setActiveTeachers(res.queue.activeTeachers);
+        }
+
+        if(!_.isEqual(res.queue.activeStudents, activeStudents) ){
+          setActiveStudents(res.queue.activeStudents);
+        }
       }
       console.log('activeStudents', activeStudents);
       console.log('activeTeachers', activeTeachers);
     })
-  }, [activeStudents, waitingStudents, activeTeachers]);
+  }, []);
 
   return (
     <Container fluid>
