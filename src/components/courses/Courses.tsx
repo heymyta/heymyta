@@ -42,14 +42,15 @@ function Courses(props: CoursesProps) {
     for (const [teacherId, teacher] of Object.entries(activeTeachers)) {
       console.log('teacher', teacher);
         teacherCards.push(
-          <TeacherCard name={teacher.username} status={teacher.status} />
+          <TeacherCard name={teacher['username']} status={teacher['status']} />
         );
     } 
   }
   if(activeStudents){
     for (const [studentId, student] of Object.entries(activeStudents)) {
+      console.log('student', student);
         studentCards.push(
-          <StudentCard name={student.username} />
+          <StudentCard name={student['username']} />
         );
     }
   }
