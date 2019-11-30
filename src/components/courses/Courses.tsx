@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Row, Col, Container } from 'react-bootstrap';
 import HttpService from '../../services/http-service';
 import StudentQueueCard from './StudentQueueCard';
@@ -15,18 +15,20 @@ function Courses(props: CoursesProps) {
   const [waitingStudents, setWaitingStudents] = useState('');
   const [activeTeachers, setActiveTeachers] = useState('');
   console.log('path', path);
-  HttpService.get(path).then((res) => {
-    console.log('res', res);
-    if (res.code === 0) {
-      
-      //causing infinite GET request
-      // setActiveStudents(res.queue.waitingStudents);
-      // setActiveTeachers(res.queue.activeTeachers);
-      // setWaitingStudents(res.queue.waitingStudents);
-    }
-    console.log('activeStudents', activeStudents);
-    console.log('activeTeachers', activeTeachers);
-  })
+  
+  useEffect(() => {
+    HttpService.get(path).then((res) => {
+      console.log('res', res);
+      if (res.code === 0) {
+        //causing infinite GET request
+        setActiveStudents(res.queue.waitingStudents);
+        setActiveTeachers(res.queue.activeTeachers);
+        setWaitingStudents(res.queue.waitingStudents);
+      }
+      console.log('activeStudents', activeStudents);
+      console.log('activeTeachers', activeTeachers);
+    })
+  }, [activeStudents, waitingStudents, activeTeachers]);
 
   return (
     <Container fluid>
