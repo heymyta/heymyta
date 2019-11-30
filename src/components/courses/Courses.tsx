@@ -37,13 +37,23 @@ function Courses(props: CoursesProps) {
     })
   }, []);
 
-  let teacherCards = activeTeachers.map((teacher) => (
-      <TeacherCard name={teacher.username} status={teacher.status} />
-  ));
-  
-  let studentCards = activeStudents.map((student) => (
-    <StudentCard name={student.username} />
-  ));
+  let teacherCards = [], studentCards = [];
+  if(activeTeachers){
+    for (const [teacherId, teacher] of Object.entries(activeTeachers)) {
+      console.log('teacher', teacher);
+        teacherCards.push(
+          <TeacherCard name={teacher.username} status={teacher.status} />
+        );
+    } 
+  }
+  if(activeStudents){
+    for (const [studentId, student] of Object.entries(activeStudents)) {
+        studentCards.push(
+          <StudentCard name={student.username} />
+        );
+    }
+  }
+
   return (
     <Container fluid>
       <Row>
