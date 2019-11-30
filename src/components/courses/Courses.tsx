@@ -12,9 +12,9 @@ interface CoursesProps {
 
 function Courses(props: CoursesProps) {
   const path = `/queue/get/${props.courseId}`;
-  const [activeStudents, setActiveStudents] = useState('');
-  const [waitingStudents, setWaitingStudents] = useState('');
-  const [activeTeachers, setActiveTeachers] = useState('');
+  const [waitingStudents, setWaitingStudents] = useState([]);
+  const [activeStudents, setActiveStudents] = useState({});
+  const [activeTeachers, setActiveTeachers] = useState({});
   console.log('path', path);
   
   useEffect(() => {
@@ -37,6 +37,13 @@ function Courses(props: CoursesProps) {
     })
   }, []);
 
+  let teacherCards = activeTeachers.map((teacher) => (
+      <TeacherCard name={teacher.username} status={teacher.status} />
+  ));
+  
+  let studentCards = activeStudents.map((student) => (
+    <StudentCard name={student.username} />
+  ));
   return (
     <Container fluid>
       <Row>
@@ -58,9 +65,7 @@ function Courses(props: CoursesProps) {
                     <Modal.Title>Active TAs</Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
-                    <TeacherCard name="Huy" status="available" />
-                    <TeacherCard name="Testing de Crule" status="working" />
-                    <TeacherCard name="Donald Duck" status="unavailable" />
+                    {teacherCards}
                   </Modal.Body>
                 </Modal.Dialog>
               </Col>
@@ -70,9 +75,7 @@ function Courses(props: CoursesProps) {
                     <Modal.Title>Active Student</Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
-                    <StudentCard name="Student 1"></StudentCard>
-                    <StudentCard name="Student 2"></StudentCard>
-                    <StudentCard name="Some interesting name"></StudentCard>
+                    {studentCards}
                   </Modal.Body>
                 </Modal.Dialog>
               </Col>
