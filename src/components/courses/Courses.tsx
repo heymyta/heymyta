@@ -28,7 +28,7 @@ function Courses(props: CoursesProps) {
       console.log('activeStudents', activeStudents);
       console.log('activeTeachers', activeTeachers);
     })
-  }, [activeStudents, waitingStudents, activeTeachers]);
+  }, []);
 
   return (
     <Container fluid>
