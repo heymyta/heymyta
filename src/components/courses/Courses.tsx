@@ -80,7 +80,7 @@ function Courses(props: CoursesProps) {
 
   for (const [_, teacher] of Object.entries(state.activeTeachers)) {
       teacherCards.push(
-        <TeacherCard entity={teacher} />
+        <TeacherCard auth={props.auth} entity={teacher} />
       );
   } 
 
