@@ -10,6 +10,6 @@ export interface Student {
 export interface Teacher {
   username: string;
   email?: string;
-  tid: string;
+  tid: number;
   status?: string;
 }

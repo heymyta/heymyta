@@ -13,29 +13,37 @@ interface StudentProps {
 }
 
 interface StudentState {
-  entity: Student,
-  helping: boolean,
+  username: string,
+  sid: number,
+  qid: number,
+  status: string,
 }
 
 class StudentQueueCard extends Component<StudentProps, StudentState> {
   constructor(props: StudentProps) {
     super(props);
     this.state = {
-      entity: null,
-      helping: false,
+      username: '',
+      sid: -1,
+      qid: -1,
+      status: '',
     }
   }
 
   componentDidMount() {
     this.setState({
-      entity: this.props.entity,
-      helping: false
+      username: this.props.entity.username,
+      sid: this.props.entity.sid,
+      qid: this.props.entity.qid,
+      status: this.props.entity.status,
     });
   }
 
-  removeStudent(student: Student) {
-    const sid = student.sid;
-    const qid = student.qid;
+  removeStudent() {
+    // HttpService.post
+    
+    const sid = this.state.sid;
+    const qid = this.state.qid;
     const path = `/queue/teacher/${qid}/kick/${sid}`
     HttpService.post(path, {}).then((res) => {
       if(res.code == 403){
@@ -51,12 +59,12 @@ class StudentQueueCard extends Component<StudentProps, StudentState> {
           <Container fluid>
             <Row>
               <Col md={9}>
-                <span>{this.props.entity.username}</span>
+                <span>{this.state.username}</span>
               </Col>
               <Col md={3}>
                 <ButtonGroup vertical>
                   <Button size="sm" variant="success">Help</Button>
-                  <Button size="sm" variant="danger" onClick={this.removeStudent(this.props.entity)}>Remove</Button>
+                  <Button size="sm" variant="danger" onClick={this.removeStudent}>Remove</Button>
                 </ButtonGroup>
               </Col>
             </Row>

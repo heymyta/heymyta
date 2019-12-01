@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { 
-  Toast, Button, 
-  Container, Row,
-  Col
+  Toast
 } from 'react-bootstrap';
 
 import './CardStyle.scss';
@@ -13,30 +11,38 @@ interface TeacherProps {
 }
 
 interface TeacherState {
-  entity: Teacher;
+  username: string;
+  email: string;
+  tid: number;
+  status: string;
 }
 
 class TeacherCard extends Component<TeacherProps, TeacherState> {
   constructor(props: TeacherProps) {
     super(props);
     this.state = {
-      entity: null,
+      username: '',
+      email: '',
+      tid: -1,
+      status: '',
     }
   }
 
   componentDidMount() {
     this.setState({
-      entity: this.props.entity,
+      username: this.props.entity.username,
+      email: this.props.entity.email,
+      tid: this.props.entity.tid,
+      status: this.props.entity.status,
     })
-    console.log(this.state.entity);
   }
 
   render() {
     return( 
       <Toast>
         <Toast.Header closeButton={false}>
-          <div className={`status ${this.props.entity.status}`}></div>
-          <span>{this.props.entity.username}</span>
+          <div className={`status ${this.state.status}`}></div>
+          <span>{this.state.username}</span>
         </Toast.Header>
       </Toast>
     );

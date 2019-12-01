@@ -12,23 +12,29 @@ interface StudentProps {
 }
 
 interface StudentState {
-  entity: Student,
-  helping: boolean,
+  username: string,
+  sid: number,
+  qid: number,
+  status: string,
 }
 
 class StudentCard extends Component<StudentProps, StudentState> {
   constructor(props: StudentProps) {
     super(props);
     this.state = {
-      entity: null ,
-      helping: false,
+      username: '',
+      sid: -1,
+      qid: -1,
+      status: '',
     }
   }
 
   componentDidMount() {
     this.setState({
-      entity: this.props.entity,
-      helping: false
+      username: this.props.entity.username,
+      sid: this.props.entity.sid,
+      qid: this.props.entity.qid,
+      status: this.props.entity.status,
     })
   }
 
@@ -36,7 +42,7 @@ class StudentCard extends Component<StudentProps, StudentState> {
     return( 
       <Toast>
         <Toast.Header closeButton={false}>
-          <span>{this.props.entity.username}</span>
+          <span>{this.state.username}</span>
         </Toast.Header>
       </Toast>
     );

@@ -45,8 +45,8 @@ function Header(props: HeaderProps) {
     </Nav>
     ):(
     <Nav>
-      <Link className="btn btn-primary mr-3 btn-home" to="/teacher/login" role="button">TA/Professor Login</Link>
-      <Link className="btn btn-primary btn-home"  to="/student/login">Student login</Link>
+      <Link className="btn btn-primary mt-3 btn-home" to="/teacher/login" role="button">TA/Professor Login</Link>
+      <Link className="btn btn-primary mt-3 btn-home"  to="/student/login">Student login</Link>
     </Nav>
     );
   return (
