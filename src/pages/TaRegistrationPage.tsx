@@ -32,6 +32,7 @@ function TaRegistrationPage(props: LoginProps) {
       console.log('res', res);
       if (res.code == 0){
         setMsg('great');
+        await props.auth.handleLogout();
         await props.auth.handleTaLogin(username, password);
         history.push('/courses');
         return res;

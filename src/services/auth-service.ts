@@ -10,10 +10,12 @@ class AuthService {
   userType: UserType;//student or teacher
   logedIn: boolean;
   connected: boolean;
+  userInfo: object;
   constructor(){
     this.logedIn = false;
     this.userType = UserType.NONE;
     this.connected = false;
+    this.userInfo = null;
   }
 
   async handleTaLogin(username, password){
@@ -34,7 +36,7 @@ class AuthService {
   }
 
   async handleLogout(){
-    return httpService.get('/logout')
+    return await httpService.get('/logout')
     .then((res) => {
       this.logedIn = false;
       this.connected = false;
@@ -102,13 +104,15 @@ class AuthService {
     if(res.code == 403){
       return false;
     }
+    this.userInfo = (userType===UserType.STUDENT) ? res.student : res.teacher;
     this.logedIn = true;
     this.userType = userType;
     return true;
   }
 
-  handleTaRegister({name, username, password}){
-    return httpService.post('/teacher/register', {
+  async handleTaRegister({name, username, password}){
+    await this.handleLogout();
+    return await httpService.post('/teacher/register', {
       name: name,
       email: 'dummy_email@dummy.dummy',
       username: username, 

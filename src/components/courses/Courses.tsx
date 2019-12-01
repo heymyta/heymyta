@@ -13,68 +13,71 @@ interface CoursesProps {
 function Courses(props: CoursesProps) {
   const delay = 3000;
   let path = `/queue/get/${props.courseId}`;
-  let [longPoll, setLongPoll] = useState(false);
-  const [waitingStudents, setWaitingStudents] = useState([]);
-  const [activeStudents, setActiveStudents] = useState({});
-  const [activeTeachers, setActiveTeachers] = useState({});
-  const timerId = useRef<any>();
-  console.log('timerId', timerId);
-  if(timerId.current != null){
+
+  const [queueState, setQueueState] = useState({
+    longPoll: false,
+    pendingRequest: false
+  })
+  const [state, setState] = useState({
+    waitingStudents: [],
+    activeStudents: {},
+    activeTeachers: {}
+  });
+  if(queueState.longPoll){
     path += `?longpoll=true`;
   }
   
-  let updateActiveTeacherStudentAndWaitingStudent = () => {
-    HttpService.get(path).then((res) => {
-      if (res.code === 0) {
-        setLongPoll(true);
-        if(!_.isEqual(res.queue.activeTeachers, activeTeachers) ){
-          setActiveTeachers(res.queue.activeTeachers);
-        }
-
-        if(!_.isEqual(res.queue.activeStudents, activeStudents) ){
-          setActiveStudents(res.queue.activeStudents);
-        }
-
-        if(!_.isEqual(res.queue.waitingStudents, waitingStudents) ){
-          setWaitingStudents(res.queue.waitingStudents);
-        }
-      }
+  
+  let updateActiveTeacherStudentAndWaitingStudent = async () => {
+    setQueueState({
+      longPoll: true, pendingRequest: true
     });
+    await HttpService.get(path).then((res) => {
+      if (res.code === 0) {
+        if(!_.isEqual(res.queue.activeTeachers, state.activeTeachers) ||
+           !_.isEqual(res.queue.activeStudents, state.activeStudents) ||
+           !_.isEqual(res.queue.waitingStudents, state.waitingStudents)){
+            setState({
+              waitingStudents: res.queue.waitingStudents,
+              activeStudents: res.queue.activeStudents,
+              activeTeachers: res.queue.activeTeachers
+            });
+        }
+      }else{
+        console.log('updateActiveTeacherStudentAndWaitingStudent error', res);
+      }
+      setQueueState({
+        longPoll: true, pendingRequest: false
+      })
+      return res;
+    });
+    
   }
 
-  useEffect(() => {
-    if(!longPoll){
-      updateActiveTeacherStudentAndWaitingStudent();
-    }
-    //using data longpolling
-    timerId.current = setInterval(() => {
-      updateActiveTeacherStudentAndWaitingStudent();
-    }, delay);
 
-    return () => {
-      clearTimeout(timerId.current)
-      timerId.current = null;
-    }
+  useEffect(() => {
+      if(queueState.pendingRequest == false)
+        updateActiveTeacherStudentAndWaitingStudent();
   });
 
   let teacherCards = [], studentCards = [], waitingStudentCards = [];
 
-  for (const [teacherId, teacher] of Object.entries(activeTeachers)) {
+  for (const [teacherId, teacher] of Object.entries(state.activeTeachers)) {
       teacherCards.push(
         <TeacherCard name={teacher['username']} status={teacher['status']} />
       );
   } 
 
-  for (const [studentId, student] of Object.entries(activeStudents)) {
+  for (const [studentId, student] of Object.entries(state.activeStudents)) {
       studentCards.push(
         <StudentCard name={student['username']} />
       );
   }
 
 
-  for (const studentId of waitingStudents){
+  for (const studentId of state.waitingStudents){
     waitingStudentCards.push(
-      <StudentQueueCard name={activeStudents[studentId]['username']} />
+      <StudentQueueCard name={state.activeStudents[studentId]['username']} />
     )
   }
 
@@ -98,7 +101,7 @@ function Courses(props: CoursesProps) {
                   <Modal.Header>
                     <Modal.Title>Active TAs</Modal.Title>
                   </Modal.Header>
-                  <Modal.Body>
+                  <Modal.Body style={{overflowY: 'scroll', height: '250px'}}>
                     {teacherCards}
                   </Modal.Body>
                 </Modal.Dialog>
@@ -108,7 +111,7 @@ function Courses(props: CoursesProps) {
                   <Modal.Header>
                     <Modal.Title>Active Student</Modal.Title>
                   </Modal.Header>
-                  <Modal.Body>
+                  <Modal.Body style={{overflowY: 'scroll', height: '250px'}}>
                     {studentCards}
                   </Modal.Body>
                 </Modal.Dialog>
@@ -120,10 +123,10 @@ function Courses(props: CoursesProps) {
           <Modal.Dialog>
             <Modal.Header>
               <Modal.Title>
-                <span>Queue length: {waitingStudents.length}</span>
+                <span>Queue length: {state.waitingStudents.length}</span>
               </Modal.Title>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body style={{overflowY: 'scroll', height: '400px'}}>
               {waitingStudentCards}
             </Modal.Body>
             <Modal.Footer>Help next inline</Modal.Footer>

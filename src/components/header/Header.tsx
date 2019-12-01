@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   Container, Navbar, Button, Nav
 } from 'react-bootstrap';
@@ -16,7 +16,10 @@ interface HeaderProps {
 function Header(props: HeaderProps) {
   let location = useLocation();
   let history = useHistory();
-
+  const [state, setState] = useState({
+    userType: props.auth.userType == 'ta' ? 'Teacher: ' : 'Student:',
+    username: props.auth.userInfo['username']
+  });
   let onLogout = () => {
     props.auth.handleLogout()
     .then((res) => {
@@ -24,8 +27,18 @@ function Header(props: HeaderProps) {
       return res;
     });
   };
+
+  useEffect(() => {
+    setState({
+      userType: props.auth.userType == 'ta' ? 'Teacher: ' : 'Student:',
+      username: props.auth.userInfo['username']
+    })
+  }, [props.auth.logedIn, props.auth.userType]);
   let UserAction = () => (props.auth && props.auth.logedIn) ? (
     <Nav>
+      <span className="navbar-text">
+        {state.userType + ' ' + state.username}
+      </span>
       <Button variant="btn-primary" onClick={onLogout}>
         Log out
       </Button>
