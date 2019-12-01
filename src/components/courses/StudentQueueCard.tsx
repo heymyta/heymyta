@@ -34,8 +34,6 @@ class StudentQueueCard extends Component<StudentProps, StudentState> {
   }
 
   removeStudent(student: Student) {
-    // HttpService.post
-    
     const sid = student.sid;
     const qid = student.qid;
     const path = `/queue/teacher/${qid}/kick/${sid}`
