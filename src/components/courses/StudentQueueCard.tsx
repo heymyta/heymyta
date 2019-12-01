@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { 
   Toast, Button, 
   Container, Row,
-  Col
+  Col, ButtonGroup
 } from 'react-bootstrap';
 import { cpus } from 'os';
 
@@ -35,14 +35,16 @@ class StudentQueueCard extends Component<StudentProps, StudentState> {
     return( 
       <Toast>
         <Toast.Header closeButton={false}>
-          <Container>
+          <Container fluid>
             <Row>
-              <Col>
+              <Col md={9}>
                 <span>{this.props.name}</span>
               </Col>
-              <Col>
-                <Row><Button size="sm" variant="success">Help</Button></Row>
-                <Row><Button size="sm" variant="danger">Remove</Button></Row>
+              <Col md={3}>
+                <ButtonGroup vertical>
+                  <Button size="sm" variant="success">Help</Button>
+                  <Button size="sm" variant="danger">Remove</Button>
+                </ButtonGroup>
               </Col>
             </Row>
           </Container>
