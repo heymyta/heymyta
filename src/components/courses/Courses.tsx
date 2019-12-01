@@ -23,7 +23,7 @@ function Courses(props: CoursesProps) {
     status: SStatus.NONE
   });
   const [teacherState, setTeacherState] = useState({
-    status: TStatius.NONE
+    status: TStatus.NONE
   });
   const [queueState, setQueueState] = useState({
     longPoll: false,
@@ -80,7 +80,7 @@ function Courses(props: CoursesProps) {
 
   for (const [_, teacher] of Object.entries(state.activeTeachers)) {
       teacherCards.push(
-        <TeacherCard auth={props.auth} entity={teacher} />
+        <TeacherCard entity={teacher} />
       );
   } 
 
@@ -93,10 +93,20 @@ function Courses(props: CoursesProps) {
 
   for (const studentId of state.waitingStudents){
     waitingStudentCards.push(
-      <StudentQueueCard entity={state.activeStudents[studentId]} />
+      <StudentQueueCard auth={props.auth} entity={state.activeStudents[studentId]} />
     )
   }
 
+  let studentAction = (
+    <div>
+    </div>
+  );
+  
+  let teacherAction = (
+    <div>
+    </div>
+  );
+  
   return (
     <Container fluid>
       <Row>

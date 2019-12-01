@@ -7,7 +7,7 @@ import {
 import { cpus } from 'os';
 import HttpService from '../../services/http-service';
 import { Student } from './models';
-import UserType form '../../services/UserType';
+import UserType from '../../services/UserType';
 
 interface StudentProps {
   entity: Student,
@@ -22,6 +22,7 @@ interface StudentState {
 }
 
 class StudentQueueCard extends Component<StudentProps, StudentState> {
+  userType;
   constructor(props: StudentProps) {
     super(props);
     this.state = {
@@ -30,6 +31,7 @@ class StudentQueueCard extends Component<StudentProps, StudentState> {
       qid: -1,
       status: '',
     }
+    this.userType = props.auth.userType;
     this.removeStudent = this.removeStudent.bind(this);
   }
 
@@ -52,14 +54,15 @@ class StudentQueueCard extends Component<StudentProps, StudentState> {
       }
     });
   }
-
-  const taAction = (
-    <ButtonGroup vertical>
-      <Button size="sm" variant="success" disabled>Help</Button>
-      <Button size="sm" variant="danger" onClick={this.removeStudent}>Remove</Button>
-    </ButtonGroup>
-  );
   render() {
+    
+    let taAction = (
+      <ButtonGroup vertical>
+        <Button size="sm" variant="success" disabled>Help</Button>
+        <Button size="sm" variant="danger" onClick={this.removeStudent}>Remove</Button>
+      </ButtonGroup>
+    );
+    
     return( 
       <Toast>
         <Toast.Header closeButton={false}>
@@ -69,7 +72,7 @@ class StudentQueueCard extends Component<StudentProps, StudentState> {
                 <span>{this.state.username}</span>
               </Col>
               <Col md={3}>
-                {}
+                {(this.userType==UserType.TA) && taAction}
               </Col>
             </Row>
           </Container>

@@ -1,3 +1,5 @@
-export enum TeacherStatus {
+enum StudentStatus {
     NONE = "none"
 }
+
+export default StudentStatus;
