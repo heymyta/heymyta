@@ -37,10 +37,10 @@ class StudentQueueCard extends Component<StudentProps, StudentState> {
         <Toast.Header closeButton={false}>
           <Container fluid>
             <Row>
-              <Col>
+              <Col md={9}>
                 <span>{this.props.name}</span>
               </Col>
-              <Col>
+              <Col md={3}>
                 <ButtonGroup vertical>
                   <Button size="sm" variant="success">Help</Button>
                   <Button size="sm" variant="danger">Remove</Button>
