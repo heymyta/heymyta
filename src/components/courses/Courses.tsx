@@ -6,14 +6,17 @@ import StudentCard from './StudentCard';
 import TeacherCard from './TeacherCard';
 import { Student, Teacher } from './models';
 import _ from 'lodash';
+import UserType from '../../services/UserType';
 
 interface CoursesProps {
   courseId: number,
+  auth,
 }
 
 function Courses(props: CoursesProps) {
   const delay = 3000;
   let path = `/queue/get/${props.courseId}`;
+  let userType = props.auth.userType;
 
   const [queueState, setQueueState] = useState({
     longPoll: false,
@@ -51,6 +54,11 @@ function Courses(props: CoursesProps) {
         longPoll: true, pendingRequest: false
       })
       return res;
+    }).catch((error) => {
+      console.log('error', error);
+      setQueueState({
+        longPoll: true, pendingRequest: false
+      })
     });
     
   }
@@ -78,10 +86,20 @@ function Courses(props: CoursesProps) {
 
   for (const studentId of state.waitingStudents){
     waitingStudentCards.push(
-      <StudentQueueCard entity={state.activeStudents[studentId]} />
+      <StudentQueueCard auth={props.auth} entity={state.activeStudents[studentId]} />
     )
   }
 
+  let studentAction = (
+    <div>
+    </div>
+  );
+  
+  let teacherAction = (
+    <div>
+    </div>
+  );
+  
   return (
     <Container fluid>
       <Row>
@@ -102,7 +120,7 @@ function Courses(props: CoursesProps) {
                   <Modal.Header>
                     <Modal.Title>Active TAs</Modal.Title>
                   </Modal.Header>
-                  <Modal.Body style={{overflowY: 'scroll', height: '250px'}}>
+                  <Modal.Body style={{overflowY: 'auto', height: '250px'}}>
                     {teacherCards}
                   </Modal.Body>
                 </Modal.Dialog>
@@ -112,7 +130,7 @@ function Courses(props: CoursesProps) {
                   <Modal.Header>
                     <Modal.Title>Active Student</Modal.Title>
                   </Modal.Header>
-                  <Modal.Body style={{overflowY: 'scroll', height: '250px'}}>
+                  <Modal.Body style={{overflowY: 'auto', height: '250px'}}>
                     {studentCards}
                   </Modal.Body>
                 </Modal.Dialog>
@@ -127,11 +145,15 @@ function Courses(props: CoursesProps) {
                 <span>Queue length: {state.waitingStudents.length}</span>
               </Modal.Title>
             </Modal.Header>
-            <Modal.Body style={{overflowY: 'scroll', height: '400px'}}>
+            <Modal.Body style={{overflowY: 'auto', height: '400px'}}>
               {waitingStudentCards}
             </Modal.Body>
             <Modal.Footer>
+<<<<<<< HEAD
               <Button variant="dark" bg="dark" size="lg">Help next inline</Button>
+=======
+              Help next inline
+>>>>>>> master
             </Modal.Footer>
           </Modal.Dialog>
         </Col>

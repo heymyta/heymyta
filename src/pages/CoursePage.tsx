@@ -38,7 +38,7 @@ function CoursePage(props: MyProps, state: MyState){
   return (
     <div>
       <Header auth={props.auth}/>
-      <Courses courseId={props.match.params.courseId}/>
+      <Courses auth={props.auth} courseId={props.match.params.courseId}/>
     </div>
   )
 }

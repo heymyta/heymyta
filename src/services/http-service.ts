@@ -6,7 +6,8 @@ class HttpService {
     constructor(){
         this.baseURL = `${process.env.REACT_APP_SERVER_API_ENDPOINT}`;
         this.service = axios.create({
-            withCredentials: true
+            withCredentials: true,
+            timeout: 300000 //300s = 5min
         });
         this.service.defaults.baseURL = this.baseURL;
     }

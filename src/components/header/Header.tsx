@@ -18,7 +18,7 @@ function Header(props: HeaderProps) {
   let history = useHistory();
   const [state, setState] = useState({
     userType: props.auth.userType == 'ta' ? 'Teacher: ' : 'Student:',
-    username: props.auth.userInfo['username']
+    username: props.auth.userInfo && props.auth.userInfo['username']
   });
   let onLogout = () => {
     props.auth.handleLogout()
@@ -31,7 +31,7 @@ function Header(props: HeaderProps) {
   useEffect(() => {
     setState({
       userType: props.auth.userType == 'ta' ? 'Teacher: ' : 'Student:',
-      username: props.auth.userInfo['username']
+      username: props.auth.userInfo && props.auth.userInfo['username']
     })
   }, [props.auth.logedIn, props.auth.userType]);
   let UserAction = () => (props.auth && props.auth.logedIn) ? (
@@ -45,7 +45,7 @@ function Header(props: HeaderProps) {
     </Nav>
     ):(
     <Nav>
-      <Link className="btn btn-primary mt-3 btn-home" to="/teacher/login" role="button">TA/Professor Login</Link>
+      <Link className="btn btn-primary mt-3 mr-3 btn-home" to="/teacher/login" role="button">TA/Professor Login</Link>
       <Link className="btn btn-primary mt-3 btn-home"  to="/student/login">Student login</Link>
     </Nav>
     );
