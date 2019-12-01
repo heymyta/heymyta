@@ -9,12 +9,14 @@ import _ from 'lodash';
 
 interface CoursesProps {
   courseId: number,
+  auth,
 }
 
 function Courses(props: CoursesProps) {
   const delay = 3000;
   let path = `/queue/get/${props.courseId}`;
-
+  let userType = props.auth.userType;
+  
   const [queueState, setQueueState] = useState({
     longPoll: false,
     pendingRequest: false
@@ -107,7 +109,7 @@ function Courses(props: CoursesProps) {
                   <Modal.Header>
                     <Modal.Title>Active TAs</Modal.Title>
                   </Modal.Header>
-                  <Modal.Body style={{overflowY: 'scroll', height: '250px'}}>
+                  <Modal.Body style={{overflowY: 'auto', height: '250px'}}>
                     {teacherCards}
                   </Modal.Body>
                 </Modal.Dialog>
@@ -117,7 +119,7 @@ function Courses(props: CoursesProps) {
                   <Modal.Header>
                     <Modal.Title>Active Student</Modal.Title>
                   </Modal.Header>
-                  <Modal.Body style={{overflowY: 'scroll', height: '250px'}}>
+                  <Modal.Body style={{overflowY: 'auto', height: '250px'}}>
                     {studentCards}
                   </Modal.Body>
                 </Modal.Dialog>
@@ -132,7 +134,7 @@ function Courses(props: CoursesProps) {
                 <span>Queue length: {state.waitingStudents.length}</span>
               </Modal.Title>
             </Modal.Header>
-            <Modal.Body style={{overflowY: 'scroll', height: '400px'}}>
+            <Modal.Body style={{overflowY: 'auto', height: '400px'}}>
               {waitingStudentCards}
             </Modal.Body>
             <Modal.Footer>Help next inline</Modal.Footer>
