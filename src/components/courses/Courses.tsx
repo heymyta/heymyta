@@ -43,7 +43,7 @@ function Courses(props: CoursesProps) {
               activeTeachers: res.queue.activeTeachers
             });
         }
-      }else{
+      } else {
         console.log('updateActiveTeacherStudentAndWaitingStudent error', res);
       }
       setQueueState({
