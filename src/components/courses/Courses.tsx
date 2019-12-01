@@ -65,7 +65,7 @@ function Courses(props: CoursesProps) {
 
   for (const [_, teacher] of Object.entries(state.activeTeachers)) {
       teacherCards.push(
-        <TeacherCard name={teacher['username']} status={teacher['status']} />
+        <TeacherCard entity={teacher} />
       );
   } 
 

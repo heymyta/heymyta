@@ -11,4 +11,5 @@ export interface Teacher {
   username: string;
   email?: string;
   tid: string;
+  status?: string;
 }

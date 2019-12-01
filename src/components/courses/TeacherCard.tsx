@@ -6,40 +6,37 @@ import {
 } from 'react-bootstrap';
 
 import './CardStyle.scss';
+import { Teacher } from './models';
 
 interface TeacherProps {
-  name: string,
-  status?: string,
+  entity: Teacher;
 }
 
 interface TeacherState {
-  name: string,
-  status: string,
+  entity: Teacher;
 }
 
 class TeacherCard extends Component<TeacherProps, TeacherState> {
   constructor(props: TeacherProps) {
     super(props);
     this.state = {
-      name: '',
-      status: ''
+      entity: null,
     }
   }
 
   componentDidMount() {
-
     this.setState({
-      name: this.props.name,
-      status: this.props.status ? this.props.status : 'available'
+      entity: this.props.entity,
     })
+    console.log(this.state.entity);
   }
 
   render() {
     return( 
       <Toast>
         <Toast.Header closeButton={false}>
-          <div className={`status ${this.state.status}`}></div>
-          <span>{this.state.name}</span>
+          <div className={`status ${this.props.entity.status}`}></div>
+          <span>{this.props.entity.username}</span>
         </Toast.Header>
       </Toast>
     );
