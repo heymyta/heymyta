@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { Form, Button, Container, Row } from 'react-bootstrap';
 import AuthService from '../services/auth-service';
 import {
   useHistory
 } from 'react-router-dom';
+import httpService from '../services/http-service';
 const LOGIN_ENDPOINT = `/teacher/login`
 
 interface LoginProps {
@@ -22,6 +23,12 @@ function TaRegistrationPage(props: LoginProps) {
     return name.length > 0 && (password === confirmedPassword) && username.length > 0 && password.length > 0;
   }
 
+  const logout = async () => {
+    await props.auth.handleLogout()
+  }
+  useEffect(() => {
+    logout();
+  });
   function handleSubmit(event: Event) {
     event.preventDefault();
     props.auth.handleTaRegister({
@@ -32,7 +39,6 @@ function TaRegistrationPage(props: LoginProps) {
       console.log('res', res);
       if (res.code == 0){
         setMsg('great');
-        await props.auth.handleLogout();
         await props.auth.handleTaLogin(username, password);
         history.push('/courses');
         return res;
