@@ -29,7 +29,7 @@ function CoursePage(props: MyProps, state: MyState){
         }
       });
   }
-  joinQueueAsTeacher();
+  if(props.auth.logedIn && props.auth.userType == 'ta') joinQueueAsTeacher();
 
   useEffect(() => {
   });
