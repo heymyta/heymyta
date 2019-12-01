@@ -42,6 +42,7 @@ class StudentCard extends Component<StudentProps, StudentState> {
     return( 
       <Toast>
         <Toast.Header closeButton={false}>
+          <div className={`status ${this.state.status}`}></div>
           <span>{this.state.username}</span>
         </Toast.Header>
       </Toast>
