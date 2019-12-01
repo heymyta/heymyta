@@ -25,9 +25,9 @@ function TALoginPage(props: LoginProps) {
     await props.auth.handleTaLogin(username, password)
           .then((res) => {
             console.log('res ta login', res);
-            if(res.code == 0){
+            if (res.code == 0) {
               history.push('/courses');
-            }else{
+            } else {
               setMsg(res.msg);
             }
           });

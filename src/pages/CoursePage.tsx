@@ -11,7 +11,7 @@ import httpService from '../services/http-service';
 
 interface MyProps {
   auth: AuthService,
-  match;
+  match?: any;
 }
   
 interface MyState {

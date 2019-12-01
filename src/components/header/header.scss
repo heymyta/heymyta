@@ -17,3 +17,9 @@
 .bg-base-theme {
   background-color: $unl-base-theme !important;
 }
+
+.btn {
+  &-home {
+    width: 200px
+  }
+}

@@ -16,7 +16,7 @@ import {
 
 
 interface LandingPageProps {
-  auth: AuthService
+  auth?: AuthService
 }
 
 const LandingPage = (props:LandingPageProps) => {

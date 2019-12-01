@@ -4,6 +4,7 @@ import HttpService from '../../services/http-service';
 import StudentQueueCard from './StudentQueueCard';
 import StudentCard from './StudentCard';
 import TeacherCard from './TeacherCard';
+import { Student, Teacher } from './models';
 import _ from 'lodash';
 
 interface CoursesProps {
@@ -20,8 +21,8 @@ function Courses(props: CoursesProps) {
   })
   const [state, setState] = useState({
     waitingStudents: [],
-    activeStudents: {},
-    activeTeachers: {}
+    activeStudents: new Map<number, Student>(),
+    activeTeachers: new Map<number, Teacher>()
   });
   if(queueState.longPoll){
     path += `?longpoll=true`;
@@ -56,28 +57,28 @@ function Courses(props: CoursesProps) {
 
 
   useEffect(() => {
-      if(queueState.pendingRequest == false)
-        updateActiveTeacherStudentAndWaitingStudent();
+    if(queueState.pendingRequest == false)
+      updateActiveTeacherStudentAndWaitingStudent();
   });
 
   let teacherCards = [], studentCards = [], waitingStudentCards = [];
 
-  for (const [teacherId, teacher] of Object.entries(state.activeTeachers)) {
+  for (const [_, teacher] of Object.entries(state.activeTeachers)) {
       teacherCards.push(
         <TeacherCard name={teacher['username']} status={teacher['status']} />
       );
   } 
 
-  for (const [studentId, student] of Object.entries(state.activeStudents)) {
+  for (const [_, student] of Object.entries(state.activeStudents)) {
       studentCards.push(
-        <StudentCard name={student['username']} />
+        <StudentCard entity={student} />
       );
   }
 
 
   for (const studentId of state.waitingStudents){
     waitingStudentCards.push(
-      <StudentQueueCard name={state.activeStudents[studentId]['username']} />
+      <StudentQueueCard entity={state.activeStudents[studentId]} />
     )
   }
 

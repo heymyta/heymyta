@@ -5,13 +5,14 @@ import {
   Col
 } from 'react-bootstrap';
 import { cpus } from 'os';
+import { Student } from './models';
 
 interface StudentProps {
-  name: string,
+  entity: Student
 }
 
 interface StudentState {
-  name: string,
+  entity: Student,
   helping: boolean,
 }
 
@@ -19,14 +20,14 @@ class StudentCard extends Component<StudentProps, StudentState> {
   constructor(props: StudentProps) {
     super(props);
     this.state = {
-      name: '',
+      entity: null ,
       helping: false,
     }
   }
 
   componentDidMount() {
     this.setState({
-      name: this.props.name,
+      entity: this.props.entity,
       helping: false
     })
   }
@@ -35,7 +36,7 @@ class StudentCard extends Component<StudentProps, StudentState> {
     return( 
       <Toast>
         <Toast.Header closeButton={false}>
-          <span>{this.props.name}</span>
+          <span>{this.props.entity.username}</span>
         </Toast.Header>
       </Toast>
     );

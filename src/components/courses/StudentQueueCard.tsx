@@ -5,13 +5,15 @@ import {
   Col, ButtonGroup
 } from 'react-bootstrap';
 import { cpus } from 'os';
+import HttpService from '../../services/http-service';
+import { Student } from './models';
 
 interface StudentProps {
-  name: string,
+  entity: Student,
 }
 
 interface StudentState {
-  name: string,
+  entity: Student,
   helping: boolean,
 }
 
@@ -19,15 +21,28 @@ class StudentQueueCard extends Component<StudentProps, StudentState> {
   constructor(props: StudentProps) {
     super(props);
     this.state = {
-      name: '',
+      entity: null,
       helping: false,
     }
   }
 
   componentDidMount() {
     this.setState({
-      name: this.props.name,
+      entity: this.props.entity,
       helping: false
+    });
+  }
+
+  removeStudent(student: Student) {
+    // HttpService.post
+    
+    const sid = student.sid;
+    const qid = student.qid;
+    const path = `/queue/teacher/${qid}/kick/${sid}`
+    HttpService.post(path, {}).then((res) => {
+      if(res.code == 403){
+        console.log('res', res);
+      }
     });
   }
 
@@ -38,12 +53,12 @@ class StudentQueueCard extends Component<StudentProps, StudentState> {
           <Container fluid>
             <Row>
               <Col md={9}>
-                <span>{this.props.name}</span>
+                <span>{this.props.entity.username}</span>
               </Col>
               <Col md={3}>
                 <ButtonGroup vertical>
                   <Button size="sm" variant="success">Help</Button>
-                  <Button size="sm" variant="danger">Remove</Button>
+                  <Button size="sm" variant="danger" onClick={this.removeStudent(this.props.entity)}>Remove</Button>
                 </ButtonGroup>
               </Col>
             </Row>

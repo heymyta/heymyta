@@ -10,7 +10,7 @@ import {
 import Header from '../components/header/Header';
 import AuthService from '../services/auth-service';
 interface LoginProps {
-  auth : AuthService;
+  auth? : AuthService;
 }
 
 function StudentLoginPage(props: LoginProps) {  

@@ -4,7 +4,6 @@ import AuthService from '../services/auth-service';
 import {
   useHistory
 } from 'react-router-dom';
-import httpService from '../services/http-service';
 const LOGIN_ENDPOINT = `/teacher/login`
 
 interface LoginProps {
@@ -42,7 +41,7 @@ function TaRegistrationPage(props: LoginProps) {
         await props.auth.handleTaLogin(username, password);
         history.push('/courses');
         return res;
-      } else{
+      } else {
         setMsg(res.msg);
         return res;
       }
