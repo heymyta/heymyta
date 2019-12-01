@@ -28,6 +28,7 @@ class StudentQueueCard extends Component<StudentProps, StudentState> {
       qid: -1,
       status: '',
     }
+    this.removeStudent = this.removeStudent.bind(this);
   }
 
   componentDidMount() {
