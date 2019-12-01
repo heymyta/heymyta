@@ -1,10 +1,5 @@
 import httpService from './http-service';
-
-enum UserType {
-    STUDENT = "student",
-    TA = "ta",
-    NONE = "none"
-}
+import UserType from './UserType';
 
 class AuthService {
   userType: UserType;//student or teacher

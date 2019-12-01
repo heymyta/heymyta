@@ -6,6 +6,9 @@ import StudentCard from './StudentCard';
 import TeacherCard from './TeacherCard';
 import { Student, Teacher } from './models';
 import _ from 'lodash';
+import UserType from '../../services/UserType';
+import SStatus from '../../services/StudentStatus';
+import TStatus from '../../services/TeacherStatus';
 
 interface CoursesProps {
   courseId: number,
@@ -16,7 +19,12 @@ function Courses(props: CoursesProps) {
   const delay = 3000;
   let path = `/queue/get/${props.courseId}`;
   let userType = props.auth.userType;
-  
+  const [studentState, setStudentState] = useState({
+    status: SStatus.NONE
+  });
+  const [teacherState, setTeacherState] = useState({
+    status: TStatius.NONE
+  });
   const [queueState, setQueueState] = useState({
     longPoll: false,
     pendingRequest: false
@@ -137,7 +145,9 @@ function Courses(props: CoursesProps) {
             <Modal.Body style={{overflowY: 'auto', height: '400px'}}>
               {waitingStudentCards}
             </Modal.Body>
-            <Modal.Footer>Help next inline</Modal.Footer>
+            <Modal.Footer>
+              Help next inline
+            </Modal.Footer>
           </Modal.Dialog>
         </Col>
       </Row>
