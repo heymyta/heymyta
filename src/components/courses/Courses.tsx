@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Modal, Row, Col, Container } from 'react-bootstrap';
+import { Modal, Row, Col, Container, Button } from 'react-bootstrap';
 import HttpService from '../../services/http-service';
 import StudentQueueCard from './StudentQueueCard';
 import StudentCard from './StudentCard';
@@ -7,10 +7,14 @@ import TeacherCard from './TeacherCard';
 import { Student, Teacher } from './models';
 import _ from 'lodash';
 import UserType from '../../services/UserType';
+import SStatus from '../../services/StudentStatus';
+import TStatus from '../../services/TeacherStatus';
+import AuthService from '../../services/auth-service';
+import httpService from '../../services/http-service';
 
 interface CoursesProps {
   courseId: number,
-  auth,
+  auth : AuthService,
 }
 
 function Courses(props: CoursesProps) {
@@ -27,6 +31,36 @@ function Courses(props: CoursesProps) {
     activeStudents: new Map<number, Student>(),
     activeTeachers: new Map<number, Teacher>()
   });
+
+  let initialUserState = {
+    userType: null, status: null
+  };
+
+  let student_FSM = new Map<SStatus, SStatus>();
+  student_FSM.set(SStatus.IDLING, SStatus.RESOLVING);
+  student_FSM.set(SStatus.RESOLVING, SStatus.IDLING);
+  student_FSM.set(SStatus.NONE, SStatus.NONE);
+
+
+  let teacher_FSM = new Map<TStatus, TStatus>();
+  teacher_FSM.set(TStatus.READY, TStatus.RESOLVING);
+  teacher_FSM.set(TStatus.RESOLVING, TStatus.READY);
+  teacher_FSM.set(TStatus.NONE, TStatus.NONE);
+
+  if(props.auth.userType == UserType.STUDENT){
+    initialUserState = {
+      userType: UserType.STUDENT,
+      status: (props.auth.userInfo['status']['inQueue'] != null) ? SStatus.RESOLVING : SStatus.IDLING
+    }
+  }else if(props.auth.userType == UserType.TA){
+    console.log('props.auth.userInfo', props.auth.userInfo);
+    initialUserState = {
+      userType: UserType.TA,
+      status: (props.auth.userInfo['status']['helping'] != null) ? TStatus.RESOLVING : TStatus.READY 
+    }
+  }
+  const [userState, setUserState] = useState(initialUserState);
+
   if(queueState.longPoll){
     path += `?longpoll=true`;
   }
@@ -90,15 +124,88 @@ function Courses(props: CoursesProps) {
     )
   }
 
+
+  
+  let getHelp = async () => {
+    await httpService.post(`/queue/student/${props.courseId}/join`, {}).then((res) => {
+      if(res.code == 0){
+        setUserState((prevState) => {
+          return {
+            userType: prevState.userType,
+            status: student_FSM.get(prevState.status)
+          }
+        });
+      }else if(res.code == 403){
+        console.log('getHelp res', res);
+      }
+    });
+  }
+
+  let doneLeaveQueue = async () => {
+    await httpService.post(`/queue/student/${props.courseId}/leave`, {}).then((res) => {
+      if(res.code == 0){
+        setUserState((prevState) => {
+          return {
+            userType: prevState.userType,
+            status: student_FSM.get(prevState.status)
+          }
+        });
+      }else if(res.code == 403){
+        console.log('doneLeaveQueue res', res);
+      }
+    });
+  }
+
+  let helpNextInLine = async () => {
+    await httpService.post(`/queue/teacher/${props.courseId}/pop`, {}).then((res) => {
+      if(res.code == 0){
+        setUserState((prevState) => {
+          return {
+            userType: prevState.userType,
+            status: teacher_FSM.get(prevState.status)
+          }
+        });
+      }else if(res.code == 403){
+        console.log('helpNextInLine res', res);
+      }
+    });
+  }
+
+  let doneResolving = async () => {
+    await httpService.post(`/queue/teacher/${props.courseId}/mark_done`, {}).then((res) => {
+      if(res.code == 0){
+        setUserState((prevState) => {
+          return {
+            userType: prevState.userType,
+            status: teacher_FSM.get(prevState.status)
+          }
+        });
+      }else if(res.code == 403){
+        console.log('helpNextInLine res', res);
+      }
+    });
+  }
+
   let studentAction = (
     <div>
+      {(userState.status == SStatus.IDLING) ? 
+        <Button onClick={getHelp}>Get Help</Button> :
+        <Button onClick={doneLeaveQueue}>Done(Leave queue)</Button>
+      }
     </div>
   );
   
   let teacherAction = (
     <div>
+      {
+        (userState.status == TStatus.READY) ?
+          <Button onClick={helpNextInLine}> Help next in line</Button> :
+          <Button onClick={doneResolving}> Done resolving</Button>
+      }
     </div>
   );
+
+  let userAction = (userState.userType == UserType.STUDENT) ? studentAction : teacherAction;
   
   return (
     <Container fluid>
@@ -149,7 +256,8 @@ function Courses(props: CoursesProps) {
               {waitingStudentCards}
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="dark" bg="dark" size="lg">Help next inline</Button>
+              {/* <Button variant="dark" bg="dark" size="lg">Help next inline</Button> */}
+              {userAction}
             </Modal.Footer>
           </Modal.Dialog>
         </Col>

@@ -1,5 +1,7 @@
 enum StudentStatus {
-    NONE = "none"
+    NONE = "none",
+    RESOLVING = 'resolving',
+    IDLING = 'idling'
 }
 
 export default StudentStatus;
