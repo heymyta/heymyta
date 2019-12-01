@@ -17,6 +17,31 @@
   }
 }
 
+.queue {
+  &-username {
+    position: relative;
+    left: 10%;
+    padding-top: 8px;
+  }
+
+  &-status {
+    height: 60px;
+    width: 14px;
+    border-radius: 5px;
+    position: relative;
+    left: 1%;
+    &.ready {
+      background-color: $success;
+    }
+    &.resolving {
+      background-color: $warning;
+    }
+    &.unavailable {
+      background-color: $danger;
+    }
+  }
+}
+
 .modal {
   &-title {
     font-family: $font-family-sans-serif;

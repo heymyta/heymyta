@@ -69,7 +69,10 @@ class StudentQueueCard extends Component<StudentProps, StudentState> {
           <Container fluid>
             <Row>
               <Col md={9}>
-                <span>{this.state.username}</span>
+                <Row>
+                  <div className={`queue-status ${this.state.status}`}></div>
+                  <span className="queue-username">{this.state.username}</span>
+                </Row>
               </Col>
               <Col md={3}>
                 {(this.userType==UserType.TA) && taAction}
