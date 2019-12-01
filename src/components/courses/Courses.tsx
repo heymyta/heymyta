@@ -51,6 +51,11 @@ function Courses(props: CoursesProps) {
         longPoll: true, pendingRequest: false
       })
       return res;
+    }).catch((error) => {
+      console.log('error', error);
+      setQueueState({
+        longPoll: true, pendingRequest: false
+      })
     });
     
   }
