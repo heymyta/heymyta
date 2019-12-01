@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Modal, Row, Col, Container } from 'react-bootstrap';
+import { Modal, Row, Col, Container, Button } from 'react-bootstrap';
 import HttpService from '../../services/http-service';
 import StudentQueueCard from './StudentQueueCard';
 import StudentCard from './StudentCard';
@@ -72,15 +72,15 @@ function Courses(props: CoursesProps) {
   let teacherCards = [], studentCards = [], waitingStudentCards = [];
 
   for (const [_, teacher] of Object.entries(state.activeTeachers)) {
-      teacherCards.push(
-        <TeacherCard entity={teacher} />
-      );
+    teacherCards.push(
+      <TeacherCard entity={teacher} />
+    );
   } 
 
   for (const [_, student] of Object.entries(state.activeStudents)) {
-      studentCards.push(
-        <StudentCard entity={student} />
-      );
+    studentCards.push(
+      <StudentCard entity={student} />
+    );
   }
 
 
@@ -149,7 +149,11 @@ function Courses(props: CoursesProps) {
               {waitingStudentCards}
             </Modal.Body>
             <Modal.Footer>
+<<<<<<< HEAD
               Help next inline
+=======
+              <Button variant="dark" bg="dark" size="lg">Help next inline</Button>
+>>>>>>> huy_branch
             </Modal.Footer>
           </Modal.Dialog>
         </Col>
