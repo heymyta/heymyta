@@ -7,8 +7,6 @@ import TeacherCard from './TeacherCard';
 import { Student, Teacher } from './models';
 import _ from 'lodash';
 import UserType from '../../services/UserType';
-import SStatus from '../../services/StudentStatus';
-import TStatus from '../../services/TeacherStatus';
 
 interface CoursesProps {
   courseId: number,
@@ -19,12 +17,6 @@ function Courses(props: CoursesProps) {
   const delay = 3000;
   let path = `/queue/get/${props.courseId}`;
   let userType = props.auth.userType;
-  const [studentState, setStudentState] = useState({
-    status: SStatus.NONE
-  });
-  const [teacherState, setTeacherState] = useState({
-    status: TStatus.NONE
-  });
   const [queueState, setQueueState] = useState({
     longPoll: false,
     pendingRequest: false
