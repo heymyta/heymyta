@@ -17,6 +17,7 @@ function Courses(props: CoursesProps) {
   const delay = 3000;
   let path = `/queue/get/${props.courseId}`;
   let userType = props.auth.userType;
+  const []
   const [queueState, setQueueState] = useState({
     longPoll: false,
     pendingRequest: false

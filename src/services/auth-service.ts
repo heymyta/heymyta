@@ -6,6 +6,7 @@ class AuthService {
   logedIn: boolean;
   connected: boolean;
   userInfo: object;
+  status: object;
   constructor(){
     this.logedIn = false;
     this.userType = UserType.NONE;
