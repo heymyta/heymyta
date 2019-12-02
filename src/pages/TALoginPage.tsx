@@ -5,6 +5,7 @@ import {
 import { Form, Button, Container, Row } from 'react-bootstrap';
 import Header from '../components/header/Header';
 import AuthService from '../services/auth-service';
+import Logger from '../services/Logger';
 
 interface LoginProps {
   auth : AuthService;
@@ -13,11 +14,12 @@ interface LoginProps {
 function TALoginPage(props: LoginProps) {  
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [msg, setMsg] = useState('');
+  const [msg, setMsg] = useState();
 
   let history = useHistory();
+
   function validateForm() {
-    return (username.length > 0 && password.length > 0);
+    return (username && password) && (username.length > 0 && password.length > 0);
   }
 
   async function handleSubmit(event: Event) {
@@ -28,7 +30,7 @@ function TALoginPage(props: LoginProps) {
             if (res.code == 0) {
               history.push('/courses');
             } else {
-              setMsg(res.msg);
+              setMsg(res.msg);            
             }
           });
   }
@@ -60,7 +62,7 @@ function TALoginPage(props: LoginProps) {
             <Button variant="primary" disabled={!validateForm()} type="submit">
               Login
             </Button>
-            <p style={{color:'red'}}>{msg}</p>
+            { msg && msg.length > 0 ? (<Logger message={msg} />) : ''}
           </Form>
         </Row>
       </Container>
