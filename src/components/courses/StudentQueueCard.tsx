@@ -11,7 +11,8 @@ import UserType from '../../services/UserType';
 
 interface StudentProps {
   entity: Student,
-  auth
+  auth,
+  getHelpAction
 }
 
 interface StudentState {
@@ -54,11 +55,12 @@ class StudentQueueCard extends Component<StudentProps, StudentState> {
       }
     });
   }
+
   render() {
-    
+    const sid = this.state.sid;
     let taAction = (
       <ButtonGroup vertical>
-        <Button size="sm" variant="success" disabled>Help</Button>
+        <Button size="sm" variant="success" onClick={() => this.props.getHelpAction(sid)}>Help</Button>
         <Button size="sm" variant="danger" onClick={this.removeStudent}>Remove</Button>
       </ButtonGroup>
     );

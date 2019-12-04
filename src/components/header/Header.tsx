@@ -20,6 +20,8 @@ function Header(props: HeaderProps) {
     userType: props.auth.userType == 'ta' ? 'Teacher: ' : 'Student:',
     username: props.auth.userInfo && props.auth.userInfo['username']
   });
+  const [auth, setAuth] = useState(props.auth);
+
   let onLogout = () => {
     props.auth.handleLogout()
     .then((res) => {
@@ -32,12 +34,13 @@ function Header(props: HeaderProps) {
     setState({
       userType: props.auth.userType == 'ta' ? 'Teacher: ' : 'Student:',
       username: props.auth.userInfo && props.auth.userInfo['username']
-    })
-  }, [props.auth.logedIn, props.auth.userType]);
+    });
+    setAuth(props.auth);
+  }, [props.auth]);
   let UserAction = () => (props.auth && props.auth.logedIn) ? (
     <Nav>
       <span className="navbar-text">
-        {state.userType + ' ' + state.username}
+        {auth.userType + ': ' + auth.userInfo['username']}
       </span>
       <Button variant="btn-primary" onClick={onLogout}>
         Log out

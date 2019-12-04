@@ -12,21 +12,27 @@ class AuthService {
     this.userType = UserType.NONE;
     this.connected = false;
     this.userInfo = null;
+    this.status = null;
+  }
+
+  setFields({logedIn, userType, connected, userInfo, status}){
+    this.logedIn = logedIn;
+    this.userType = userType;
+    this.connected = connected;
+    this.userInfo = userInfo; 
+    this.status = status;
   }
 
   async handleTaLogin(username, password){
-    let that = this;
-    this.logedIn = false;
-    this.userType = UserType.NONE;
-    return httpService.post('/teacher/login', {
+    this.setFields({
+      logedIn: false, userType: UserType.NONE, 
+      connected: false, userInfo: null, status: null
+    });
+    return await httpService.post('/teacher/login', {
       username: username, 
       password: password,
-    }).then((res) => {
-      if(res.code == 0){
-        that.connected = true;
-        that.logedIn = true;
-        that.userType = UserType.TA;
-      }
+    }).then(async (res) => {
+      await this.whoami(true, false);
       return res;
     });
   }
@@ -34,9 +40,10 @@ class AuthService {
   async handleLogout(){
     return await httpService.get('/logout')
     .then((res) => {
-      this.logedIn = false;
-      this.connected = false;
-      this.userType = UserType.NONE;
+      this.setFields({
+        logedIn: false, userType: UserType.NONE, 
+        connected: false, userInfo: null, status: null
+      });
       return res
     })
   }
@@ -44,13 +51,38 @@ class AuthService {
     let that = this;
     this.logedIn = false;
     this.userType = UserType.NONE;
-    return httpService.post('/student/login', {
+    return await httpService.post('/student/login', {
       name: name
-    }).then((res) => {
+    }).then(async (res) => {
+      await this.whoami(true, false);
+      return res;
+    });
+  }
+
+  updateStatusWithLongPoll(){
+    let type = (this.userType===UserType.STUDENT) ? "student" : "teacher";
+    let api = `/${type}/me?longpoll=true`;
+    return httpService.get(api).then((res) => {
+      let userInfo = null, status = null;
+      console.log('res sss', res);
+      if(this.userType == UserType.STUDENT){
+        userInfo = res.student;
+        status = res.student['status'];
+      }else if(this.userType == UserType.TA){
+        userInfo = res.teacher;
+        status = res.teacher['status'];
+      }
       if(res.code == 0){
-        that.connected = true;
-        that.logedIn = true;
-        that.userType = UserType.STUDENT;
+        this.setFields({
+          logedIn: true, userType: UserType.TA, 
+          connected: true, userInfo: userInfo,
+          status: status
+        });
+      }else{
+        this.setFields({
+          logedIn: false, userType: UserType.NONE, 
+          connected: false, userInfo: null, status: null
+        });
       }
       return res;
     });

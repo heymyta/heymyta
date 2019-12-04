@@ -66,11 +66,11 @@ function Courses(props: CoursesProps) {
   }
   
   
-  let updateActiveTeacherStudentAndWaitingStudent = async () => {
+  let updateActiveTeacherStudentAndWaitingStudent = () => {
     setQueueState({
       longPoll: true, pendingRequest: true
     });
-    await HttpService.get(path).then((res) => {
+    HttpService.get(path).then((res) => {
       if (res.code === 0) {
         if(!_.isEqual(res.queue.activeTeachers, state.activeTeachers) ||
            !_.isEqual(res.queue.activeStudents, state.activeStudents) ||
@@ -102,6 +102,22 @@ function Courses(props: CoursesProps) {
     if(queueState.pendingRequest == false)
       updateActiveTeacherStudentAndWaitingStudent();
   });
+  
+  let helpStudent = async (sid='') => {
+    let api = `/queue/teacher/${props.courseId}/pop/${sid}`;
+    await httpService.post(api, {}).then((res) => {
+      if(res.code == 0){
+        setUserState((prevState) => {
+          return {
+            userType: prevState.userType,
+            status: teacher_FSM.get(prevState.status)
+          }
+        });
+      }else if(res.code == 403){
+        console.log('helpStudent res', res);
+      }
+    });
+  }
 
   let teacherCards = [], studentCards = [], waitingStudentCards = [];
 
@@ -120,7 +136,7 @@ function Courses(props: CoursesProps) {
 
   for (const studentId of state.waitingStudents){
     waitingStudentCards.push(
-      <StudentQueueCard auth={props.auth} entity={state.activeStudents[studentId]} />
+      <StudentQueueCard auth={props.auth} getHelpAction={helpStudent} entity={state.activeStudents[studentId]} />
     )
   }
 
@@ -156,21 +172,6 @@ function Courses(props: CoursesProps) {
     });
   }
 
-  let helpNextInLine = async () => {
-    await httpService.post(`/queue/teacher/${props.courseId}/pop`, {}).then((res) => {
-      if(res.code == 0){
-        setUserState((prevState) => {
-          return {
-            userType: prevState.userType,
-            status: teacher_FSM.get(prevState.status)
-          }
-        });
-      }else if(res.code == 403){
-        console.log('helpNextInLine res', res);
-      }
-    });
-  }
-
   let doneResolving = async () => {
     await httpService.post(`/queue/teacher/${props.courseId}/mark_done`, {}).then((res) => {
       if(res.code == 0){
@@ -181,7 +182,7 @@ function Courses(props: CoursesProps) {
           }
         });
       }else if(res.code == 403){
-        console.log('helpNextInLine res', res);
+        console.log('helpStudent res', res);
       }
     });
   }
@@ -199,7 +200,7 @@ function Courses(props: CoursesProps) {
     <div>
       {
         (userState.status == TStatus.READY) ?
-          <Button onClick={helpNextInLine}> Help next in line</Button> :
+          <Button onClick={helpStudent}> Help next in line</Button> :
           <Button onClick={doneResolving}> Done resolving</Button>
       }
     </div>

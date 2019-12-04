@@ -23,9 +23,23 @@ import TaRegistrationPage from './pages/TaRegistrationPage';
 interface Props{
   auth : AuthService;
 }
-const App = (props) => {
+const App = (props: Props) => {
 
+  const [pendingRequest, setPendingRequest] = useState(false);
 
+  useEffect(() => {
+    // if(pendingRequest == false){
+      // setPendingRequest(true);
+      // props.auth.updateStatusWithLongPoll().then((res) => {
+      //   // setPendingRequest(false);
+      //   props.auth.updateStatusWithLongPoll();
+      // }).catch((e) => {
+      //   console.log('useEffect updateStatusWithLongPoll error', e);
+      //   // setPendingRequest(false);
+      //   props.auth.updateStatusWithLongPoll();
+      // });
+    // }
+  });
   const AllRoute = () => (
     <div>
       <Route exact path='/' 
