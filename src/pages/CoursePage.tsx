@@ -8,6 +8,7 @@ import Courses from '../components/courses/Courses';
 
 import AuthService from '../services/auth-service';
 import httpService from '../services/http-service';
+import {toast} from 'react-toastify';
 
 interface MyProps {
   auth: AuthService,
@@ -24,6 +25,7 @@ function CoursePage(props: MyProps, state: MyState){
     httpService.post(`/queue/teacher/${props.match.params.courseId}/join`, {})
       .then((res) => {
         if(res.code == 403){
+          toast.error(res.msg);
           history.push('/');
           console.log('res', res);
         }

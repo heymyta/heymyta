@@ -5,7 +5,6 @@ import {
 import { Form, Button, Container, Row } from 'react-bootstrap';
 import Header from '../components/header/Header';
 import AuthService from '../services/auth-service';
-import Logger from '../services/Logger';
 
 interface LoginProps {
   auth : AuthService;
@@ -62,7 +61,7 @@ function TALoginPage(props: LoginProps) {
             <Button variant="primary" disabled={!validateForm()} type="submit">
               Login
             </Button>
-            { msg && msg.length > 0 ? (<Logger message={msg} />) : ''}
+            { msg }
           </Form>
         </Row>
       </Container>

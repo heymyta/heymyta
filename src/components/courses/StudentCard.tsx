@@ -6,6 +6,7 @@ import {
 } from 'react-bootstrap';
 import { cpus } from 'os';
 import { Student } from './models';
+import _ from 'lodash';
 
 interface StudentProps {
   entity: Student
@@ -27,15 +28,26 @@ class StudentCard extends Component<StudentProps, StudentState> {
       qid: -1,
       status: '',
     }
+    this.updateCardInfo = this.updateCardInfo.bind(this);
   }
 
-  componentDidMount() {
+  updateCardInfo() {
     this.setState({
       username: this.props.entity.username,
       sid: this.props.entity.sid,
       qid: this.props.entity.qid,
       status: this.props.entity.status,
-    })
+    });
+  }
+
+  componentDidMount() {
+    this.updateCardInfo();
+  }
+
+  componentDidUpdate(prevProps) {
+    if(!_.isEqual(prevProps, this.props) ){
+      this.updateCardInfo();
+    }
   }
 
   render() {

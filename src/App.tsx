@@ -1,7 +1,6 @@
 import React, { 
   useEffect, useState
 } from 'react';
-
 //global css
 import './App.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
@@ -19,7 +18,11 @@ import CoursePage from './pages/CoursePage';
 import TALoginPage from './pages/TALoginPage';
 import StudentLoginPage from './pages/StudentLoginPage';
 import TaRegistrationPage from './pages/TaRegistrationPage';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
+// Call it once in your app. At the root of your app is the best place
+toast.configure()
 interface Props{
   auth : AuthService;
 }
@@ -78,7 +81,8 @@ const App = (props: Props) => {
     <div>
       <BrowserRouter>
         <Switch>
-          <AllRoute/>
+            {/* <ToastContainer position={toast.POSITION.TOP_RIGHT} /> */}
+            <AllRoute/>
         </Switch>
       </BrowserRouter>
     </div>  

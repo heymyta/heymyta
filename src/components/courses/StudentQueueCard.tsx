@@ -8,6 +8,8 @@ import { cpus } from 'os';
 import HttpService from '../../services/http-service';
 import { Student } from './models';
 import UserType from '../../services/UserType';
+import _ from 'lodash';
+import {toast} from 'react-toastify';
 
 interface StudentProps {
   entity: Student,
@@ -34,9 +36,10 @@ class StudentQueueCard extends Component<StudentProps, StudentState> {
     }
     this.userType = props.auth.userType;
     this.removeStudent = this.removeStudent.bind(this);
+    this.updateCardInfo = this.updateCardInfo.bind(this);
   }
 
-  componentDidMount() {
+  updateCardInfo() {
     this.setState({
       username: this.props.entity.username,
       sid: this.props.entity.sid,
@@ -44,14 +47,23 @@ class StudentQueueCard extends Component<StudentProps, StudentState> {
       status: this.props.entity.status,
     });
   }
+  componentDidUpdate(prevProps) {
+    if(!_.isEqual(prevProps, this.props) ){
+      this.updateCardInfo();
+    }
+  }
+  componentDidMount() {
+    this.updateCardInfo();
+  }
 
   removeStudent() {
     const sid = this.state.sid;
     const qid = this.state.qid;
     const path = `/queue/teacher/${qid}/kick/${sid}`
     HttpService.post(path, {}).then((res) => {
-      if(res.code == 403){
+      if(res.code == 403 || res.code == 308){
         console.log('res removeStudent error', res);
+        toast.error(res.msg);
       }
     });
   }

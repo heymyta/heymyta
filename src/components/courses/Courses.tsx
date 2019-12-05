@@ -11,6 +11,7 @@ import SStatus from '../../services/StudentStatus';
 import TStatus from '../../services/TeacherStatus';
 import AuthService from '../../services/auth-service';
 import httpService from '../../services/http-service';
+import { toast } from 'react-toastify';
 
 interface CoursesProps {
   courseId: number,
@@ -82,7 +83,8 @@ function Courses(props: CoursesProps) {
             });
         }
       } else {
-        console.log('updateActiveTeacherStudentAndWaitingStudent error', res);
+        console.log('updateActiveTeacherStudentAndWaitingStudent res', res);
+        toast.error(res.msg);
       }
       setQueueState({
         longPoll: true, pendingRequest: false
@@ -105,6 +107,7 @@ function Courses(props: CoursesProps) {
   
   let helpStudent = async (sid='') => {
     let api = `/queue/teacher/${props.courseId}/pop/${sid}`;
+    console.log('api', api);
     await httpService.post(api, {}).then((res) => {
       if(res.code == 0){
         setUserState((prevState) => {
@@ -113,8 +116,9 @@ function Courses(props: CoursesProps) {
             status: teacher_FSM.get(prevState.status)
           }
         });
-      }else if(res.code == 403){
+      }else{
         console.log('helpStudent res', res);
+        toast.error(res.msg);
       }
     });
   }
@@ -153,6 +157,7 @@ function Courses(props: CoursesProps) {
         });
       }else if(res.code == 403){
         console.log('getHelp res', res);
+        toast.error(res.msg);
       }
     });
   }
@@ -168,6 +173,7 @@ function Courses(props: CoursesProps) {
         });
       }else if(res.code == 403){
         console.log('doneLeaveQueue res', res);
+        toast.error(res.msg);
       }
     });
   }
@@ -182,7 +188,8 @@ function Courses(props: CoursesProps) {
           }
         });
       }else if(res.code == 403){
-        console.log('helpStudent res', res);
+        console.log('doneResolving res', res);
+        toast.error(res.msg);
       }
     });
   }
@@ -200,7 +207,7 @@ function Courses(props: CoursesProps) {
     <div>
       {
         (userState.status == TStatus.READY) ?
-          <Button onClick={helpStudent}> Help next in line</Button> :
+          <Button onClick={() => helpStudent('')}> Help next in line</Button> :
           <Button onClick={doneResolving}> Done resolving</Button>
       }
     </div>

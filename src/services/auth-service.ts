@@ -32,7 +32,7 @@ class AuthService {
       username: username, 
       password: password,
     }).then(async (res) => {
-      await this.whoami(true, false);
+      await this.whoami(true);
       return res;
     });
   }
@@ -54,47 +54,44 @@ class AuthService {
     return await httpService.post('/student/login', {
       name: name
     }).then(async (res) => {
-      await this.whoami(true, false);
+      await this.whoami(true);
       return res;
     });
   }
 
-  updateStatusWithLongPoll(){
-    let type = (this.userType===UserType.STUDENT) ? "student" : "teacher";
-    let api = `/${type}/me?longpoll=true`;
-    return httpService.get(api).then((res) => {
-      let userInfo = null, status = null;
-      console.log('res sss', res);
-      if(this.userType == UserType.STUDENT){
-        userInfo = res.student;
-        status = res.student['status'];
-      }else if(this.userType == UserType.TA){
-        userInfo = res.teacher;
-        status = res.teacher['status'];
-      }
-      if(res.code == 0){
-        this.setFields({
-          logedIn: true, userType: UserType.TA, 
-          connected: true, userInfo: userInfo,
-          status: status
-        });
-      }else{
-        this.setFields({
-          logedIn: false, userType: UserType.NONE, 
-          connected: false, userInfo: null, status: null
-        });
-      }
-      return res;
-    });
-  }
+  // updateStatusWithLongPoll(){
+  //   let type = (this.userType===UserType.STUDENT) ? "student" : "teacher";
+  //   let api = `/${type}/me?longpoll=true`;
+  //   return httpService.get(api).then((res) => {
+  //     let userInfo = null, status = null;
+  //     console.log('res sss', res);
+  //     if(this.userType == UserType.STUDENT){
+  //       userInfo = res.student;
+  //       status = res.student['status'];
+  //     }else if(this.userType == UserType.TA){
+  //       userInfo = res.teacher;
+  //       status = res.teacher['status'];
+  //     }
+  //     if(res.code == 0){
+  //       this.setFields({
+  //         logedIn: true, userType: UserType.TA, 
+  //         connected: true, userInfo: userInfo,
+  //         status: status
+  //       });
+  //     }else{
+  //       this.setFields({
+  //         logedIn: false, userType: UserType.NONE, 
+  //         connected: false, userInfo: null, status: null
+  //       });
+  //     }
+  //     return res;
+  //   });
+  // }
   /**
    * check if current login account is a student or ta or none
    * force: = true. force to reconnect and check for authentication
    */
-  async whoami(force=false, fakeauth=false){
-    if(fakeauth){
-      await this.fakeAuth();
-    }
+  async whoami(force=false){
     let payload = (logedIn, userType) => {
       return {
         logedIn: logedIn,
@@ -147,26 +144,6 @@ class AuthService {
       password: password,
       invite_code: 'fall2019ta'
     });
-  }
-  async fakeTARegister(name, email, pass){
-    return await httpService.postAsync(`/teacher/register`, {
-      username: name,
-      email: email,
-      password: pass
-    });
-  }
-
-  async fakeTAAuth(name='test', pass='test'){
-    return await httpService.postAsync('/teacher/login', {
-      username: name,
-      password: pass
-    });
-  }
-
-  async fakeAuth(){
-    await this.fakeTARegister('test', 'test@test.com', 'test');
-    let auth =  await this.fakeTAAuth('test', 'test');
-    return auth;
   }
 }
 
