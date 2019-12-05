@@ -13,6 +13,7 @@ dependencies:
   react-router: 4.3.1
   react-router-dom: 5.1.2
   react-scripts: 3.2.0
+  react-toastify: 5.4.1
   typescript: 3.7.2
 devDependencies:
   lint: 0.7.0
@@ -9697,6 +9698,18 @@ packages:
       fsevents: 2.0.7
     resolution:
       integrity: sha512-6LzuKbE2B4eFQG6i1FnTScn9HDcWBfXXnOwW9xKFPJ/E3rK8i1ufbOZ0ocKyRPxJAKdN7iqg3i7lt0+oxkSVOA==
+  /react-toastify/5.4.1:
+    dependencies:
+      '@babel/runtime': 7.7.4
+      classnames: 2.2.6
+      prop-types: 15.7.2
+      react-transition-group: 4.3.0
+    dev: false
+    peerDependencies:
+      react: '>=15.0.0'
+      react-dom: '>=15.0.0'
+    resolution:
+      integrity: sha512-24EwkWrj47Id/HGjYfdcntaZpAQ3J5NX31SnGRD66hM/KvPKVJzPiDBPZ+/RZ3SvNkbNWfHpPKFWzenJjC26hg==
   /react-transition-group/4.3.0:
     dependencies:
       '@babel/runtime': 7.7.4
@@ -12099,4 +12112,5 @@ specifiers:
   react-router: ^4.2.0
   react-router-dom: ^5.1.2
   react-scripts: ^3.0.1
+  react-toastify: ^5.4.1
   typescript: ^3.4.5
