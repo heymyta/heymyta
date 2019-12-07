@@ -59,34 +59,33 @@ class AuthService {
     });
   }
 
-  // updateStatusWithLongPoll(){
-  //   let type = (this.userType===UserType.STUDENT) ? "student" : "teacher";
-  //   let api = `/${type}/me?longpoll=true`;
-  //   return httpService.get(api).then((res) => {
-  //     let userInfo = null, status = null;
-  //     console.log('res sss', res);
-  //     if(this.userType == UserType.STUDENT){
-  //       userInfo = res.student;
-  //       status = res.student['status'];
-  //     }else if(this.userType == UserType.TA){
-  //       userInfo = res.teacher;
-  //       status = res.teacher['status'];
-  //     }
-  //     if(res.code == 0){
-  //       this.setFields({
-  //         logedIn: true, userType: UserType.TA, 
-  //         connected: true, userInfo: userInfo,
-  //         status: status
-  //       });
-  //     }else{
-  //       this.setFields({
-  //         logedIn: false, userType: UserType.NONE, 
-  //         connected: false, userInfo: null, status: null
-  //       });
-  //     }
-  //     return res;
-  //   });
-  // }
+  updateStatusWithLongPoll(){
+    let type = (this.userType===UserType.STUDENT) ? "student" : "teacher";
+    let api = `/${type}/me?longpoll=true`;
+    return httpService.get(api).then((res) => {
+      let userInfo = null, status = null;
+      if(this.userType == UserType.STUDENT){
+        userInfo = res.student;
+        status = res.student['status'];
+      }else if(this.userType == UserType.TA){
+        userInfo = res.teacher;
+        status = res.teacher['status'];
+      }
+      if(res.code == 0){
+        this.setFields({
+          logedIn: true, userType: this.userType, 
+          connected: true, userInfo: userInfo,
+          status: status
+        });
+      }else{
+        this.setFields({
+          logedIn: false, userType: UserType.NONE, 
+          connected: false, userInfo: null, status: null
+        });
+      }
+      return res;
+    });
+  }
   /**
    * check if current login account is a student or ta or none
    * force: = true. force to reconnect and check for authentication

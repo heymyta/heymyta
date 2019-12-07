@@ -25,7 +25,7 @@ function CoursePage(props: MyProps, state: MyState){
     httpService.post(`/queue/teacher/${props.match.params.courseId}/join`, {})
       .then((res) => {
         if(res.code == 403){
-          toast.error(res.msg);
+          toast.error(`joinAsTeacher: ${res.msg}`);
           history.push('/');
           console.log('res', res);
         }

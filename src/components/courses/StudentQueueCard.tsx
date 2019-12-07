@@ -63,7 +63,7 @@ class StudentQueueCard extends Component<StudentProps, StudentState> {
     HttpService.post(path, {}).then((res) => {
       if(res.code == 403 || res.code == 308){
         console.log('res removeStudent error', res);
-        toast.error(res.msg);
+        toast.error(`remove student error: ${res.msg}`);
       }
     });
   }
