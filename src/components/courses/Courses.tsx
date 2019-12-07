@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Modal, Row, Col, Container, Button } from 'react-bootstrap';
+import HttpService from '../../services/http-service';
 import StudentQueueCard from './StudentQueueCard';
 import StudentCard from './StudentCard';
 import TeacherCard from './TeacherCard';
@@ -22,7 +23,6 @@ function Courses(props: CoursesProps) {
   let path = `/queue/get/${props.courseId}`;
   let userType = props.auth.userType;
 
-  const [authPendingRequest, setAuthPendingRequest] = useState(false);
   const [queueState, setQueueState] = useState({
     longPoll: false,
     pendingRequest: false
@@ -33,42 +33,45 @@ function Courses(props: CoursesProps) {
     activeTeachers: new Map<number, Teacher>()
   });
 
-  let _getUserState = (auth: AuthService) => {
-    let _state = {
-      userType: null,
-      status: null
-    };
-    if(auth.userType == UserType.STUDENT){
-      _state.userType = UserType.STUDENT;
-      if(auth.userInfo['status']['inQueue'] == null){
-        _state.status = SStatus.AWAY;
-      }else if(auth.userInfo['status']['inQueue']['status'] == 'waiting'){
-        _state.status = SStatus.WAITING;
-      }else if(auth.userInfo['status']['inQueue']['status'] == 'resolving'){
-        _state.status = SStatus.RESOLVING;
-      }
-    }else if(auth.userType == UserType.TA){
-      console.log('props.auth.userInfo', auth.userInfo);
-      _state = {
-        userType: UserType.TA,
-        status: (auth.userInfo['status']['helping'] != null) ? TStatus.RESOLVING : TStatus.READY 
-      }
-    }
-    return _state;
-  }
+  let initialUserState = {
+    userType: null, status: null
+  };
 
-  let initialUserState = _getUserState(props.auth);
+  let student_FSM = new Map<SStatus, SStatus>();
+  student_FSM.set(SStatus.IDLING, SStatus.RESOLVING);
+  student_FSM.set(SStatus.RESOLVING, SStatus.IDLING);
+  student_FSM.set(SStatus.NONE, SStatus.NONE);
+
+
+  let teacher_FSM = new Map<TStatus, TStatus>();
+  teacher_FSM.set(TStatus.READY, TStatus.RESOLVING);
+  teacher_FSM.set(TStatus.RESOLVING, TStatus.READY);
+  teacher_FSM.set(TStatus.NONE, TStatus.NONE);
+
+  if(props.auth.userType == UserType.STUDENT){
+    initialUserState = {
+      userType: UserType.STUDENT,
+      status: (props.auth.userInfo['status']['inQueue'] != null) ? SStatus.RESOLVING : SStatus.IDLING
+    }
+  }else if(props.auth.userType == UserType.TA){
+    console.log('props.auth.userInfo', props.auth.userInfo);
+    initialUserState = {
+      userType: UserType.TA,
+      status: (props.auth.userInfo['status']['helping'] != null) ? TStatus.RESOLVING : TStatus.READY 
+    }
+  }
   const [userState, setUserState] = useState(initialUserState);
 
   if(queueState.longPoll){
     path += `?longpoll=true`;
   }
   
+  
   let updateActiveTeacherStudentAndWaitingStudent = () => {
     setQueueState({
       longPoll: true, pendingRequest: true
     });
-    httpService.get(path).then((res) => {
+    HttpService.get(path).then((res) => {
       if (res.code === 0) {
         if(!_.isEqual(res.queue.activeTeachers, state.activeTeachers) ||
            !_.isEqual(res.queue.activeStudents, state.activeStudents) ||
@@ -81,7 +84,7 @@ function Courses(props: CoursesProps) {
         }
       } else {
         console.log('updateActiveTeacherStudentAndWaitingStudent res', res);
-        toast.error(`longpollQueue: ${res.msg}`);
+        toast.error(res.msg);
       }
       setQueueState({
         longPoll: true, pendingRequest: false
@@ -95,69 +98,29 @@ function Courses(props: CoursesProps) {
     });
     
   }
-  const updateUserStatus = () => {
-    setAuthPendingRequest(true);
-    props.auth.updateStatusWithLongPoll().then((res) => {
-      if(res.code == 0){
-        let current =_getUserState(props.auth);
-        if(!_.isEqual(current, userState))
-          setUserState(current);
-      } else {
-        console.log('updateUserStatus res', res);
-        toast.error(`longpoll userstatus: ${res.msg}`);
-      }
-      setAuthPendingRequest(false);
-      return res;
-    }).catch((e) => {
-      console.log('e', e);
-      setAuthPendingRequest(false);
-    });
 
-  }
 
   useEffect(() => {
     if(queueState.pendingRequest == false)
       updateActiveTeacherStudentAndWaitingStudent();
-
-    if(authPendingRequest == false)
-      updateUserStatus();
   });
   
-
-  let serverAction = async (api, nextUserStatus) => {
+  let helpStudent = async (sid='') => {
+    let api = `/queue/teacher/${props.courseId}/pop/${sid}`;
+    console.log('api', api);
     await httpService.post(api, {}).then((res) => {
       if(res.code == 0){
         setUserState((prevState) => {
           return {
             userType: prevState.userType,
-            status: nextUserStatus
+            status: teacher_FSM.get(prevState.status)
           }
         });
       }else{
-        console.log(`api: ${api}`, res);
-        toast.error(`error serverAction ${res.code}: ${res.msg}`);
+        console.log('helpStudent res', res);
+        toast.error(res.msg);
       }
     });
-  }
-  
-  let studentGetHelp = async () => {
-    await serverAction(`/queue/student/${props.courseId}/join`, SStatus.WAITING);
-  }
-
-  let studentMarkDone =async () => {
-    await serverAction(`/queue/student/${props.courseId}/mark_done`, SStatus.AWAY);
-  }
-
-  let studentLeaveQueue =async () => {
-    await serverAction(`/queue/student/${props.courseId}/leave`, SStatus.AWAY);
-  }
-
-  let doneResolving =async () => {
-    await serverAction(`/queue/teacher/${props.courseId}/mark_done`, TStatus.READY);
-  }
-
-  let helpStudent =async (sid='') => {
-    await serverAction(`/queue/teacher/${props.courseId}/pop/${sid}`, TStatus.RESOLVING);
   }
 
   let teacherCards = [], studentCards = [], waitingStudentCards = [];
@@ -182,16 +145,64 @@ function Courses(props: CoursesProps) {
   }
 
 
-
-  let studentAction = <></>;
   
-  if(userState.status == SStatus.AWAY){
-    studentAction = <Button className="btn btn-primary" onClick={studentGetHelp}>Get Help</Button>;
-  } else if(userState.status == SStatus.WAITING){
-    studentAction = <Button className="btn btn-danger" onClick={studentLeaveQueue}>Leave queue</Button>;
-  }else if(userState.status == SStatus.RESOLVING){
-    studentAction = <Button className="btn btn-success" onClick={studentMarkDone}>Done</Button>;
+  let getHelp = async () => {
+    await httpService.post(`/queue/student/${props.courseId}/join`, {}).then((res) => {
+      if(res.code == 0){
+        setUserState((prevState) => {
+          return {
+            userType: prevState.userType,
+            status: student_FSM.get(prevState.status)
+          }
+        });
+      }else if(res.code == 403){
+        console.log('getHelp res', res);
+        toast.error(res.msg);
+      }
+    });
   }
+
+  let doneLeaveQueue = async () => {
+    await httpService.post(`/queue/student/${props.courseId}/leave`, {}).then((res) => {
+      if(res.code == 0){
+        setUserState((prevState) => {
+          return {
+            userType: prevState.userType,
+            status: student_FSM.get(prevState.status)
+          }
+        });
+      }else if(res.code == 403){
+        console.log('doneLeaveQueue res', res);
+        toast.error(res.msg);
+      }
+    });
+  }
+
+  let doneResolving = async () => {
+    await httpService.post(`/queue/teacher/${props.courseId}/mark_done`, {}).then((res) => {
+      if(res.code == 0){
+        setUserState((prevState) => {
+          return {
+            userType: prevState.userType,
+            status: teacher_FSM.get(prevState.status)
+          }
+        });
+      }else if(res.code == 403){
+        console.log('doneResolving res', res);
+        toast.error(res.msg);
+      }
+    });
+  }
+
+  let studentAction = (
+    <div>
+      {(userState.status == SStatus.IDLING) ? 
+        <Button onClick={getHelp}>Get Help</Button> :
+        <Button onClick={doneLeaveQueue}>Done(Leave queue)</Button>
+      }
+    </div>
+  );
+  
   let teacherAction = (
     <div>
       {
@@ -229,7 +240,7 @@ function Courses(props: CoursesProps) {
                   </Modal.Body>
                 </Modal.Dialog>
               </Col>
-              {/* <Col>
+              <Col>
                 <Modal.Dialog>
                   <Modal.Header>
                     <Modal.Title>Active Student</Modal.Title>
@@ -238,7 +249,7 @@ function Courses(props: CoursesProps) {
                     {studentCards}
                   </Modal.Body>
                 </Modal.Dialog>
-              </Col> */}
+              </Col>
             </Row>
           </Container>
         </Col>

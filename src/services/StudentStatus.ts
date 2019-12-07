@@ -1,9 +1,7 @@
 enum StudentStatus {
     NONE = "none",
-    AWAY="Away - not in queue",
-    WAITING = 'waiting in queue',
-    RESOLVING = 'resolving in queue'
-    
+    RESOLVING = 'resolving',
+    IDLING = 'idling'
 }
 
 export default StudentStatus;

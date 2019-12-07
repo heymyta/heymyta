@@ -1,5 +1,4 @@
 import axios from 'axios';
-import {toast} from 'react-toastify';
 
 class HttpService {
     service;
@@ -14,14 +13,7 @@ class HttpService {
     }
 
     get(path){
-        return this.service.get(path).then((res)=>res.data)
-        .catch((e) => {
-            if(e.status == '502'){
-                toast.error(`You are making to many request(${e.message})`);
-            }else{
-                toast.error(`error ${e.status}: ${e.message}`);
-            }
-        });
+        return this.service.get(path).then((res)=>res.data);
     }
 
     post(path, payload) {
@@ -30,14 +22,7 @@ class HttpService {
           url: path,
           responseType: 'json',
           data: payload
-        }).then((res)=>res.data)
-        .catch((e) => {
-            if(e.status == '502'){
-                toast.error(`You are making to many request(${e.message})`);
-            }else{
-                toast.error(`error ${e.status}: ${e.message}`);
-            }
-        });
+        }).then((res)=>res.data);
     }
 
     async getAsync(path){
