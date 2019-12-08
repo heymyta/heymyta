@@ -6,7 +6,7 @@ import {
 } from 'react-bootstrap';
 import { cpus } from 'os';
 import HttpService from '../../services/http-service';
-import { Student } from './models';
+import { Student, Teacher } from './models';
 import UserType from '../../services/UserType';
 import _ from 'lodash';
 import { toast } from 'react-toastify';
@@ -22,6 +22,7 @@ interface StudentState {
   sid: number,
   qid: number,
   status: string,
+  assignedTeacher?: Teacher,
 }
 
 class StudentQueueCard extends Component<StudentProps, StudentState> {
@@ -45,6 +46,7 @@ class StudentQueueCard extends Component<StudentProps, StudentState> {
       sid: this.props.entity.sid,
       qid: this.props.entity.qid,
       status: this.props.entity.status,
+      assignedTeacher: this.props.entity.assignedTeacher,
     });
   }
   componentDidUpdate(prevProps) {
@@ -86,6 +88,7 @@ class StudentQueueCard extends Component<StudentProps, StudentState> {
                 <Row>
                   <div className={`queue-status ${this.state.status}`}></div>
                   <span className="queue-username">{this.state.username}</span>
+                  <span className="queue-assigned-username">Assigned Teacher: { this.state.assignedTeacher ? this.state.assignedTeacher.username : '' }</span>
                 </Row>
               </Col>
               <Col md={3}>
