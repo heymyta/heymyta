@@ -207,7 +207,7 @@ function Courses(props: CoursesProps) {
   return (
     <Container fluid>
       <Row>
-        <Col className="courses-left-container" xl={5}>
+        <Col className="courses-left-container" md={5} lg={5} xl={5}>
           <Container fluid>
             <Row>
               <h1 className="courses-title">CSCE {props.courseId}</h1>
@@ -242,7 +242,7 @@ function Courses(props: CoursesProps) {
             </Row>
           </Container>
         </Col>
-        <Col className="courses-right-container" xl={5}>
+        <Col className="courses-right-container" md={5} lg={5} xl={5}>
           <Modal.Dialog>
             <Modal.Header>
               <Modal.Title>
