@@ -57,7 +57,6 @@ class StudentCard extends Component<StudentProps, StudentState> {
           <div className={`status ${this.state.status}`}></div>
           <span>{this.state.username}</span>
         </Toast.Header>
-        <Toast.Body>yada</Toast.Body>
       </Toast>
     );
   }
