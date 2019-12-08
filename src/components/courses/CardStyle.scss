@@ -28,6 +28,14 @@
     padding-top: 8px;
   }
 
+  &-assigned-username {
+    position: absolute;
+    font-size: 12px;
+    font-weight: 500;
+    left: 16%;
+    top: 70%;
+  }
+
   &-status {
     height: 60px;
     width: 14px;
