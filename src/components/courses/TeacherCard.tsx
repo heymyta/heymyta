@@ -42,7 +42,7 @@ class TeacherCard extends Component<TeacherProps, TeacherState> {
       <Toast>
         <Toast.Header closeButton={false}>
           <div className={`status ${this.state.status}`}></div>
-          <span>{this.state.username}</span>
+          <span className="status username">{this.state.username}</span>
         </Toast.Header>
       </Toast>
     );

@@ -1,11 +1,11 @@
 @import 'bootstrap/scss/bootstrap';
 
 .status {
-  height: 40px;
+  height: 45px;
   width: 14px;
-  border-radius: 5px;
+  border-radius: 3px;
   position: relative;
-  left: 95%;
+  left: 1%;
   &.ready {
     background-color: $success;
   }
@@ -14,6 +14,10 @@
   }
   &.unavailable {
     background-color: $danger;
+  }
+
+  &.username {
+    left: 5%;
   }
 }
 
@@ -27,7 +31,7 @@
   &-status {
     height: 60px;
     width: 14px;
-    border-radius: 5px;
+    border-radius: 3px;
     position: relative;
     left: 1%;
     &.ready {

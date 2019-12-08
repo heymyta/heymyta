@@ -9,12 +9,12 @@ import HttpService from '../../services/http-service';
 import { Student } from './models';
 import UserType from '../../services/UserType';
 import _ from 'lodash';
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 
 interface StudentProps {
   entity: Student,
-  auth,
-  getHelpAction
+  auth: any,
+  getHelpAction?: any,
 }
 
 interface StudentState {

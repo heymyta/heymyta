@@ -208,7 +208,7 @@ function Courses(props: CoursesProps) {
     <Container fluid>
       <Row>
         <Col className="courses-left-container" xl={5}>
-          <Container>
+          <Container fluid>
             <Row>
               <h1 className="courses-title">CSCE {props.courseId}</h1>
             </Row>
